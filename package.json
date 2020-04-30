@@ -3,7 +3,7 @@
 	"displayName": "mc-datapack",
 	"description": "Makes the creation of Minecraft datapacks easier.",
 	"icon": "images/icon.png",
-	"version": "1.0.0",
+	"version": "0.0.2",
 	"publisher": "HuJohner",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -53,5 +53,6 @@
 		"mocha": "^7.1.1",
 		"typescript": "^3.8.3",
 		"vscode-test": "^1.3.0"
-	}
+	},
+	"dependencies": {}
 }
