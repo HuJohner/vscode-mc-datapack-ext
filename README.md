@@ -13,6 +13,12 @@ Creation of basic datapack structure including:
 
 * /data
 
+* reset and main functions (/data/<author>/functions/<namespace>)
+
+* respective load and tick tags (/data/minecraft/tags/functions)
+
+* datapack advancement (/data/gobal/advancements)
+
 * more to come...
 
 \!\[feature X\]\(images/feature-x.png\)
@@ -28,6 +34,14 @@ There are no requirements or dependencies but I highly recommend using a MCFunct
 Feel free to report any issues that you have.
 
 ## Release Notes
+
+### 0.0.2
+
+## Added
+
+- reset and main functions
+- load and tick tags
+- datapack advancement
 
 ### 0.0.1
 
