@@ -3,8 +3,6 @@
 
 Inspired by [this Rust application](https://github.com/oOBoomberOo/Nucleus).
 
-[![github-license-badge]](https://github.com/HuJohner/vscode-mc-datapacks-ext)
-
 ## Features
 
 Creation of basic datapack structure including:
@@ -12,6 +10,12 @@ Creation of basic datapack structure including:
 * pack.mcmeta (Required)
 
 * /data
+
+* reset and main functions (/data/<author>/functions/<namespace>)
+
+* respective load and tick tags (/data/minecraft/tags/functions)
+
+* datapack advancement (/data/gobal/advancements)
 
 * more to come...
 
@@ -28,6 +32,14 @@ There are no requirements or dependencies but I highly recommend using a MCFunct
 Feel free to report any issues that you have.
 
 ## Release Notes
+
+### 0.0.2
+
+## Added
+
+- reset and main functions
+- load and tick tags
+- datapack advancement
 
 ### 0.0.1
 
