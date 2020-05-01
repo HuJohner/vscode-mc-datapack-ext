@@ -1,0 +1,12 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- bash: |
+    echo ">>> Publish"
+    yarn deploy -p $(MARKETPLACE_PAT)
+  displayName: Publish
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
