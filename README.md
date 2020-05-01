@@ -3,8 +3,6 @@
 
 Inspired by [this Rust application](https://github.com/oOBoomberOo/Nucleus).
 
-[![github-license-badge]](https://github.com/HuJohner/vscode-mc-datapacks-ext)
-
 ## Features
 
 Creation of basic datapack structure including:
