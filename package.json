@@ -1,10 +1,12 @@
 {
 	"name": "mc-datapack",
-	"displayName": "mc-datapack",
+	"displayName": "MC Datapack",
 	"description": "Makes the creation of Minecraft datapacks easier.",
 	"icon": "images/icon.png",
 	"version": "0.0.2",
+	"author": "HuJohner",
 	"publisher": "HuJohner",
+	"homepage": "https://www.youtube.com/c/HuJohner",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
@@ -13,14 +15,32 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:mc-datapack.newDatapack"
+		"onCommand:mc-datapack.newDatapack",
+		"onCommand:mc-datapack.newMcfunction"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "MC Datapack",
+			"properties": {
+			  "mc-datapack.username": {
+				"type": "string",
+				"scope": "resource",
+				"default": "",
+				"description": "Value to use to replace <author> variable."
+			  }
+			}
+		  },
 		"commands": [
 			{
 				"command": "mc-datapack.newDatapack",
-				"title": "New datapack",
+				"title": "New Datapack",
+				"category": "Datapack"
+			},
+			{
+				"command": "mc-datapack.newMcfunction",
+				"title": "New MCFunction File",
 				"category": "Datapack"
 			}
 		],
@@ -28,6 +48,10 @@
 			"explorer/context": [
 				{
 					"command": "mc-datapack.newDatapack",
+					"group": "mc-datapack"
+				},
+				{
+					"command": "mc-datapack.newMcfunction",
 					"group": "mc-datapack"
 				}
 			]
