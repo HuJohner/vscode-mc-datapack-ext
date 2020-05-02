@@ -7,7 +7,7 @@ Inspired by [this Rust application](https://github.com/oOBoomberOo/Nucleus).
 
 ## Features
 
-Creation of basic datapack structure including:
+New Datapack context command to create basic datapack structure including:
 
 * pack.mcmeta (Required)
 
@@ -21,9 +21,9 @@ Creation of basic datapack structure including:
 
 * more to come...
 
-\!\[feature X\]\(images/feature-x.png\)
+New MCFunction file context command to create a function with file header.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Extension configuration to set default author username.
 
 ## Requirements
 
@@ -34,6 +34,13 @@ There are no requirements or dependencies but I highly recommend using a MCFunct
 Feel free to report any issues that you have.
 
 ## Release Notes
+
+### 0.0.3
+
+## Added
+
+- new mcfunction file command
+- extension config
 
 ### 0.0.2
 

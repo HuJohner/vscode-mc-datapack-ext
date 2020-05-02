@@ -4,6 +4,13 @@ All notable changes to the "mc-datapack" extension will be documented in this fi
 
 ## [Unreleased]
 
+### 0.0.3
+
+## Added
+
+- new mcfunction file command
+- extension config
+
 ### 0.0.2 - 2020-04-30
 
 ## Added
