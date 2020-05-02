@@ -13,7 +13,7 @@ New Datapack context command to create basic datapack structure including:
 
 * /data
 
-* reset and main functions (/data/<author>/functions/<namespace>)
+* reset and main functions (/data/&lt;author>/functions/&lt;namespace>)
 
 * respective load and tick tags (/data/minecraft/tags/functions)
 
