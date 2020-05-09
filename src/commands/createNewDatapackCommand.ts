@@ -52,7 +52,7 @@ export function run(uri: vscode.Uri) {
 
             // generate mcmeta file
             const newFilePath = path.join(dir, "pack.mcmeta");
-            const packTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'pack.template'), 'utf8');
+            const packTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/pack.template'), 'utf8');
             fs.writeFile(newFilePath, packTemplate.replace('<description>', description), err => {
                 if (err) {
                     console.error(err);
@@ -93,7 +93,7 @@ export function run(uri: vscode.Uri) {
                     // generate main and reset functions
                     const functionsPath = path.join(dir, `data/${author.toLocaleLowerCase()}/functions/${namespace}`);
                     fs.mkdirSync(functionsPath, { recursive: true });
-                    const mcfunctionTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'mcfunction.template'), 'utf8');
+                    const mcfunctionTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/mcfunction.template'), 'utf8');
                     fs.writeFile(path.join(functionsPath, "main.mcfunction"), mcfunctionTemplate.replace('<filename>', 'main')
                         .replace('<namespace>', namespace)
                         .replace('<author>', author), err => {
@@ -114,7 +114,7 @@ export function run(uri: vscode.Uri) {
                     // generate tick and load tags
                     const tagsPath = path.join(dir, 'data/minecraft/tags/functions');
                     fs.mkdirSync(tagsPath, { recursive: true });
-                    const tagTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'tag.template'), 'utf8');
+                    const tagTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/tag.template'), 'utf8');
                     fs.writeFile(path.join(tagsPath, "tick.json"), tagTemplate.replace('<filename>', 'main')
                         .replace('<namespace>', namespace)
                         .replace('<author>', author), err => {
@@ -136,14 +136,14 @@ export function run(uri: vscode.Uri) {
                     const globalPath = path.join(dir, 'data/global/advancements');
                     fs.mkdirSync(globalPath, { recursive: true });
 
-                    const rootTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'root.template'), 'utf8');
+                    const rootTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/root.template'), 'utf8');
                     fs.writeFile(path.join(globalPath, 'root.json'), rootTemplate, err => {
                         if (err) {
                             console.error(err);
                             return vscode.window.showErrorMessage(FAILED_NEW);
                         }
                     });
-                    const datapackTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'datapack.template'), 'utf8');
+                    const datapackTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/datapack.template'), 'utf8');
                     fs.writeFile(path.join(globalPath, `${namespace}.json`), datapackTemplate.replace('<datapack>', datapackName)
                         .replace('<author>', author)
                         .replace('<description>', description || ''), err => {
