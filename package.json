@@ -3,7 +3,7 @@
 	"displayName": "MC Datapack",
 	"description": "Makes the creation of Minecraft datapacks easier.",
 	"icon": "images/icon.png",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"author": "HuJohner",
 	"publisher": "HuJohner",
 	"homepage": "https://www.youtube.com/c/HuJohner",
@@ -20,7 +20,8 @@
 	},
 	"activationEvents": [
 		"onCommand:mc-datapack.newDatapack",
-		"onCommand:mc-datapack.newMcfunction"
+		"onCommand:mc-datapack.newMcfunction",
+		"onCommand:mc-datapack.openRecipeEditor"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -28,14 +29,14 @@
 			"type": "object",
 			"title": "MC Datapack",
 			"properties": {
-			  "mc-datapack.username": {
-				"type": "string",
-				"scope": "resource",
-				"default": "",
-				"description": "Value to use to replace <author> variable."
-			  }
+				"mc-datapack.username": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "Value to use to replace <author> variable."
+				}
 			}
-		  },
+		},
 		"commands": [
 			{
 				"command": "mc-datapack.newDatapack",
@@ -45,6 +46,11 @@
 			{
 				"command": "mc-datapack.newMcfunction",
 				"title": "New MCFunction File",
+				"category": "Datapack"
+			},
+			{
+				"command": "mc-datapack.openRecipeEditor",
+				"title": "Open Recipe Editor",
 				"category": "Datapack"
 			}
 		],
@@ -56,6 +62,13 @@
 				},
 				{
 					"command": "mc-datapack.newMcfunction",
+					"group": "mc-datapack"
+				}
+			],
+			"editor/context": [
+				{
+					"when": "resourceLangId == json && resource =~ /recipes/",
+					"command": "mc-datapack.openRecipeEditor",
 					"group": "mc-datapack"
 				}
 			]
@@ -84,5 +97,7 @@
 		"vsce": "^1.75.0",
 		"vscode-test": "^1.3.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"minecraft-textures": "^1.16.0-beta.5"
+	}
 }
