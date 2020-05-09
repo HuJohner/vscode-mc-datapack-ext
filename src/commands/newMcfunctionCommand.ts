@@ -39,7 +39,7 @@ export function run(uri: vscode.Uri) {
         const filePath = path.join(curDir, fileNameWithExt);
         let split = curDir.split('/functions/');
         const namespace = split.length === 2 ? split[1] : '';
-        const mcfunctionTemplate = fs.readFileSync(path.join(Extension.templatesPath, 'mcfunction.template'), 'utf8');
+        const mcfunctionTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/mcfunction.template'), 'utf8');
         fs.writeFile(filePath, mcfunctionTemplate.replace('<filename>', fileName)
             .replace('<namespace>', namespace)
             .replace('<author>', author), err => {

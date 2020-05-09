@@ -4,16 +4,22 @@ All notable changes to the "mc-datapack" extension will be documented in this fi
 
 ## [Unreleased]
 
-### 0.0.3
+## [0.0.4] - 2020-05-09
 
-## Added
+### Added
+
+- new recipe editor
+
+## [0.0.3] - 2020-05-02
+
+### Added
 
 - new mcfunction file command
 - extension config
 
-### 0.0.2 - 2020-04-30
+## [0.0.2] - 2020-04-30
 
-## Added
+### Added
 
 - reset and main functions
 - load and tick tags
