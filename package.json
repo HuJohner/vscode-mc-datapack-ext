@@ -18,7 +18,8 @@
 		"onCommand:mc-datapack.newDatapack",
 		"onCommand:mc-datapack.newMcfunction",
 		"onCommand:mc-datapack.openRecipeEditor",
-		"onCommand:mc-datapack.openAdvancementEditor"
+		"onCommand:mc-datapack.openAdvancementEditor",
+		"onCommand:mc-datapack.openBiomeEditor"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -54,6 +55,11 @@
 				"command": "mc-datapack.openAdvancementEditor",
 				"title": "Open Advancement Editor",
 				"category": "Datapack"
+			},
+			{
+				"command": "mc-datapack.openBiomeEditor",
+				"title": "Open Biome Editor",
+				"category": "Datapack"
 			}
 		],
 		"menus": {
@@ -76,6 +82,11 @@
 				{
 					"when": "resourceLangId == json && resource =~ /advancements/",
 					"command": "mc-datapack.openAdvancementEditor",
+					"group": "mc-datapack"
+				},
+				{
+					"when": "resourceLangId == json && resource =~ /worldgen/biome/",
+					"command": "mc-datapack.openBiomeEditor",
 					"group": "mc-datapack"
 				}
 			]
