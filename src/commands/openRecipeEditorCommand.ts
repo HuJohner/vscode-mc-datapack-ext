@@ -17,23 +17,23 @@ export function run(uri: vscode.Uri) {
         doc = editor.document;
     }
 
-    if (Extension.currentPanel) {
-        if (!Extension.currentPanel.visible) {
-            Extension.currentPanel.reveal();
+    if (Extension.recipePanel) {
+        if (!Extension.recipePanel.visible) {
+            Extension.recipePanel.reveal();
         }
 
         update(doc);
     } else {
-        Extension.currentPanel = vscode.window.createWebviewPanel('recipeEditor', 'Recipe Editor', vscode.ViewColumn.Beside, {
+        Extension.recipePanel = vscode.window.createWebviewPanel('recipeEditor', 'Recipe Editor', vscode.ViewColumn.Beside, {
             localResourceRoots: [],
             enableScripts: true
         });
 
         let content = fs.readFileSync(path.join(Extension.rootPath, 'resources', 'RecipeEditor.html'), 'utf8');
-        Extension.currentPanel.webview.html = content;
+        Extension.recipePanel.webview.html = content;
 
         // update on visible
-        let changeState = Extension.currentPanel.onDidChangeViewState(e => {
+        let changeState = Extension.recipePanel.onDidChangeViewState(e => {
             if (e.webviewPanel.visible && !previousVisible) {
                 update(doc);
             }
@@ -58,16 +58,16 @@ export function run(uri: vscode.Uri) {
         });
 
         // Reset when the current panel is closed
-        Extension.currentPanel.onDidDispose(e => {
+        Extension.recipePanel.onDidDispose(e => {
             changeState.dispose();
             changeDoc.dispose();
             changeEditor.dispose();
-            Extension.currentPanel = undefined;
+            Extension.recipePanel = undefined;
             previousVisible = false;
         });
 
         // Handle messages from the webview
-        Extension.currentPanel.webview.onDidReceiveMessage(message => {
+        Extension.recipePanel.webview.onDidReceiveMessage(message => {
             let keys = jsonKeys;
             if (message.json.key) {
                 keys = jsonKeys.concat(Object.keys(message.json.key));
@@ -78,15 +78,12 @@ export function run(uri: vscode.Uri) {
 }
 
 function update(document: vscode.TextDocument) {
-    if (!Extension.currentPanel) {
-        return;
-    }
     doc = document;
 
     let text = doc.getText();
     let json = JSON.parse(text !== '' ? text : '{}');
 
-    Extension.currentPanel.webview.postMessage(json);
+    Extension.recipePanel?.webview.postMessage(json);
 }
 
 function replace(searchValue: string, replaceValue: string) {

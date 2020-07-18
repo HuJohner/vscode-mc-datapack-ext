@@ -1,4 +1,4 @@
-# mc-datapack
+# MC Datapack
 [Visual Studio Code](https://code.visualstudio.com) extenstion that allows you to quickly create Minecraft datapacks. 
 
 Inspired by [this Rust application](https://github.com/oOBoomberOo/Nucleus).
@@ -39,6 +39,14 @@ Extension configuration to set default author username.
 4. more to come...
 
 Got suggestions? Feel free to create an issue [here](https://github.com/HuJohner/vscode-mc-datapack-ext/issues)!
+
+## Planned
+
+* advancement editor
+* loot table editor
+* predicate editor
+* tag editor (?)
+* native language support
 
 ## Requirements
 

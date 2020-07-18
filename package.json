@@ -17,7 +17,8 @@
 	"activationEvents": [
 		"onCommand:mc-datapack.newDatapack",
 		"onCommand:mc-datapack.newMcfunction",
-		"onCommand:mc-datapack.openRecipeEditor"
+		"onCommand:mc-datapack.openRecipeEditor",
+		"onCommand:mc-datapack.openAdvancementEditor"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -48,6 +49,11 @@
 				"command": "mc-datapack.openRecipeEditor",
 				"title": "Open Recipe Editor",
 				"category": "Datapack"
+			},
+			{
+				"command": "mc-datapack.openAdvancementEditor",
+				"title": "Open Advancement Editor",
+				"category": "Datapack"
 			}
 		],
 		"menus": {
@@ -65,6 +71,11 @@
 				{
 					"when": "resourceLangId == json && resource =~ /recipes/",
 					"command": "mc-datapack.openRecipeEditor",
+					"group": "mc-datapack"
+				},
+				{
+					"when": "resourceLangId == json && resource =~ /advancements/",
+					"command": "mc-datapack.openAdvancementEditor",
 					"group": "mc-datapack"
 				}
 			]
