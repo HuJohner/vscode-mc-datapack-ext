@@ -5,9 +5,11 @@ import * as path from 'path';
 import CreateNewDatapackCommand = require('./commands/createNewDatapackCommand');
 import NewMcfunctionCommand = require('./commands/newMcfunctionCommand');
 import OpenRecipeEditorCommand = require('./commands/openRecipeEditorCommand');
+import OpenAdvancementEditorCommand = require('./commands/openAdvancementEditorCommand');
 
 export let rootPath: string;
-export let currentPanel: vscode.WebviewPanel | undefined = undefined;
+export let recipePanel: vscode.WebviewPanel | undefined;
+export let advancementPanel: vscode.WebviewPanel | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "mc-datapack" is now active!');
@@ -17,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('mc-datapack.newDatapack', CreateNewDatapackCommand.run);
 	disposable = vscode.commands.registerCommand('mc-datapack.newMcfunction', NewMcfunctionCommand.run);
 	disposable = vscode.commands.registerCommand('mc-datapack.openRecipeEditor', OpenRecipeEditorCommand.run);
+	disposable = vscode.commands.registerCommand('mc-datapack.openAdvancementEditor', OpenAdvancementEditorCommand.run);
 
 	context.subscriptions.push(disposable);
 }

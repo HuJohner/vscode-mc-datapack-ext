@@ -109,6 +109,7 @@
 
     .checkbox-inline label {
       margin-left: 10px;
+      white-space: nowrap;
     }
 
     .text-inline {
@@ -842,7 +843,6 @@
 
       let type = data.type;
       let id = ev.target.id;
-      console.log(ev.target);
       if (id.includes('result')) { // output
         if (type.includes('crafting')) {
           data.result.item = itemId;
