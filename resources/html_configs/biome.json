@@ -1,0 +1,316 @@
+{
+	"precipitation": {
+		"type": "ComboBox",
+		"title": "Precipitation",
+		"default": "rain",
+		"values": [
+			"none",
+			"rain",
+			"snow"
+		]
+	},
+	"category": {
+		"type": "ComboBox",
+		"title": "Category",
+		"default": "plains",
+		"values": [
+			"none",
+			"taiga",
+			"extreme_hills",
+			"jungle",
+			"mesa",
+			"plains",
+			"savanna",
+			"icy",
+			"the_end",
+			"beach",
+			"forest",
+			"ocean",
+			"desert",
+			"river",
+			"swamp",
+			"mushroom",
+			"nether"
+		]
+	},
+	"depth": {
+		"type": "TextBox",
+		"text_type": "double",
+		"title": "Depth",
+		"default": 0.125,
+		"min": -1.0,
+		"max": 1.0
+	},
+	"scale": {
+		"type": "TextBox",
+		"text_type": "double",
+		"title": "Scale",
+		"default": 0.05,
+		"min": -1.0,
+		"max": 1.0
+	},
+	"temperature": {
+		"type": "TextBox",
+		"text_type": "double",
+		"title": "Temperature",
+		"default": 0.8,
+		"min": 0.0,
+		"max": 2.0
+	},
+	"downfall": {
+		"type": "TextBox",
+		"text_type": "double",
+		"title": "Downfall",
+		"default": 0.4,
+		"min": 0.0,
+		"max": 2.0
+	},
+	"sky_color": {
+		"type": "TextBox",
+		"text_type": "integer",
+		"title": "Sky Colour",
+		"default": 7907327,
+		"min": 0,
+		"max": 16777215
+	},
+	"effects": {
+		"type": "Group",
+		"title": "Effects",
+		"children": {
+			"fog_color": {
+				"type": "TextBox",
+				"text_type": "integer",
+				"title": "Fog Colour",
+				"default": 12638463,
+				"min": 0,
+				"max": 16777215
+			},
+			"water_color": {
+				"type": "TextBox",
+				"text_type": "integer",
+				"title": "Water Colour",
+				"default": 4159204,
+				"min": 0,
+				"max": 16777215
+			},
+			"water_fog_color": {
+				"type": "TextBox",
+				"text_type": "integer",
+				"title": "Water Fog Colour",
+				"default": 329011,
+				"min": 0,
+				"max": 16777215
+			},
+			"particle": {
+				"type": "Group",
+				"title": "Particle",
+				"children": {
+					"probability": {
+						"type": "TextBox",
+						"text_type": "double",
+						"title": "Probability",
+						"default": 0.5,
+						"min": 0.0,
+						"max": 1.0
+					},
+					"options": {
+						"type": "Group",
+						"title": "Options",
+						"children": {
+							"type": {
+								"type": "TextBox",
+								"text_type": "text",
+								"title": "Type",
+								"default": ""
+							}
+						}
+					}
+				}
+			},
+			"ambient_sound": {
+				"type": "TextBox",
+				"text_type": "text",
+				"title": "Ambient Sound",
+				"default": ""
+			},
+			"mood_sound": {
+				"type": "Group",
+				"title": "Mood Sound",
+				"children": {
+					"sound": {
+						"type": "TextBox",
+						"text_type": "text",
+						"title": "Sound",
+						"default": ""
+					},
+					"tick_delay": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Tick Delay",
+						"default": 0,
+						"min": 0
+					},
+					"block_search_extent": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Block Search Extent",
+						"default": 0,
+						"min": 0
+					},
+					"offset": {
+						"type": "TextBox",
+						"text_type": "double",
+						"title": "Offset",
+						"default": 0,
+						"min": 0
+					}
+				}
+			},
+			"additional_sound": {
+				"type": "Group",
+				"title": "Additional Sound",
+				"children": {
+					"sound": {
+						"type": "TextBox",
+						"text_type": "text",
+						"title": "Sound",
+						"default": ""
+					},
+					"tick_chance": {
+						"type": "TextBox",
+						"text_type": "double",
+						"title": "Tick Chance",
+						"default": 0,
+						"min": 0,
+						"max": 1
+					}
+				}
+			},
+			"music": {
+				"type": "Group",
+				"title": "Music",
+				"children": {
+					"sound": {
+						"type": "TextBox",
+						"text_type": "text",
+						"title": "Sound",
+						"default": ""
+					},
+					"min_delay": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Min Delay",
+						"default": 0,
+						"min": 0
+					},
+					"max_delay": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Max Delay",
+						"default": 0,
+						"min": 0
+					},
+					"replace_current_music": {
+						"type": "CheckBox",
+						"text_type": "boolean",
+						"title": "Replace Current Music",
+						"default": "false"
+					}
+				}
+			}
+		}
+	},
+	"surface_builder": {
+		"type": "TextBox",
+		"text_type": "text",
+		"title": "Surface Builder",
+		"default": ""
+	},
+	"carvers": {
+		"type": "Group",
+		"title": "Carvers",
+		"children": {
+			"air": {
+				"type": "List",
+				"list_type": "text",
+				"title": "Air"
+			},
+			"liquid": {
+				"type": "List",
+				"list_type": "text",
+				"title": "Liquid"
+			}
+		}
+	},
+	"features": {
+		"type": "List",
+		"list_type": "object",
+		"title": "Features",
+		"object": {
+			"nested_list": {
+				"type": "List",
+				"list_type": "text",
+				"title": ""
+			}
+		}
+	},
+	"starts": {
+		"type": "List",
+		"list_type": "text",
+		"title": "Starts"
+	},
+	"spawners": {
+		"type": "AutoGroup",
+		"title": "Spawners",
+		"keys": [
+			"monster",
+			"creature",
+			"ambient",
+			"water_creature",
+			"water_ambient",
+			"misc"
+		],
+		"children": {
+			"list": {
+				"type": "List",
+				"list_type": "object",
+				"title": "",
+				"object": {
+					"type": {
+						"type": "TextBox",
+						"text_type": "text",
+						"title": "Type",
+						"default": ""
+					},
+					"weight": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Weight",
+						"default": 1,
+						"min": 1
+					},
+					"minCount": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Min Count",
+						"default": 1,
+						"min": 1
+					},
+					"maxCount": {
+						"type": "TextBox",
+						"text_type": "integer",
+						"title": "Max Count",
+						"default": 0,
+						"min": 0
+					}
+				}
+			}
+		}
+	},
+	"parent": {
+		"type": "TextBox",
+		"text_type": "text",
+		"title": "Parent",
+		"default": ""
+	}
+}

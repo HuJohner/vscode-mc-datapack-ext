@@ -399,15 +399,19 @@
 
     // Handle the message inside the webview
     window.addEventListener('message', event => {
-      data = event.data;
+      switch (event.data.command) {
+        case 'update':
+          data = event.data.document;
 
-      update();
+          update();
+      }
     });
     showItemList();
 
     // send message to extension
     function sendMessage() {
       vscode.postMessage({
+        command: 'update',
         json: data
       });
     }

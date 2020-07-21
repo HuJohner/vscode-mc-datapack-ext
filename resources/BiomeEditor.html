@@ -109,47 +109,28 @@
 </head>
 
 <body>
-  <div class="dropdown-inline">
-    <label for="precipitation-dropdown">Precipitation:</label>
-    <select id="precipitation-dropdown" class="dropdown-input" onchange="changePrecipitation(event)">
-      <option value="none">none</option>
-      <option value="rain">rain</option>
-      <option value="snow">snow</option>
-    </select>
-  </div>
-  
-  <div class="dropdown-inline">
-    <label for="category-dropdown">Type:</label>
-    <select id="category-dropdown" class="dropdown-input" onchange="changeCategory(event)">
-      <option value="none">none</option>
-      <option value="taiga">taiga</option>
-      <option value="extreme_hills">extreme_hills</option>
-      <option value="jungle">jungle</option>
-      <option value="mesa">mesa</option>
-      <option value="plains">plains</option>
-      <option value="savanna">savanna</option>
-      <option value="icy">icy</option>
-      <option value="the_end">the_end</option>
-      <option value="beach">beach</option>
-      <option value="forest">forest</option>
-      <option value="ocean">ocean</option>
-      <option value="desert">desert</option>
-      <option value="river">river</option>
-      <option value="swamp">swamp</option>
-      <option value="mushroom">mushroom</option>
-      <option value="nether">nether</option>
-    </select>
+  <div id="container">
+    
   </div>
 
   <script>
     const vscode = acquireVsCodeApi();
 
+    let config;
     let doc;
     let rootPath;
+
+    vscode.postMessage({
+        command: 'init'
+      });
 
     // Handle the message inside the webview
     window.addEventListener('message', event => {
       switch (event.data.command) {
+        case 'init':
+          config = event.data.config;
+          generateHtmlFromJson(config, document.getElementById('container'));
+          break;
         case 'update':
           doc = event.data.document;
           rootPath = event.data.rootPath;
@@ -169,6 +150,99 @@
     // update view
     function update() {
 
+    }
+  </script>
+
+  <script>
+    function generateHtmlFromJson(json, container) {
+      for (let key in json) {
+        let obj = json[key];
+
+        let div = document.createElement('div');
+        div.innerHTML = obj.title;
+        switch (obj.type) {
+          case "ComboBox":
+            let select = document.createElement('select');
+            for (let value of obj.values) {
+              let item = document.createElement('option');
+              item.value = value;
+              item.innerHTML = value;
+              if (value === obj.default) {
+                item.selected = 'selected';
+              }
+              select.appendChild(item);
+            }
+            div.appendChild(select);
+          break;
+          case "TextBox":
+            let input = document.createElement('input');
+            switch (obj.text_type) {
+              case 'integer':
+                input.type = 'number';
+              break;
+              case 'double':
+                input.type = 'number';
+                input.step = '0.01';
+              break;
+              default:
+                input.type = 'text';
+            }
+            input.min = obj.min;
+            input.max = obj.max;
+            input.value = obj.default;
+            div.appendChild(input);
+          break;
+          case "CheckBox":
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            if (obj.default === 'true') {
+              checkbox.checked = true;
+            }
+            div.appendChild(checkbox);
+          break;
+          case "Group":
+            div.innerHTML = '';
+            let group = document.createElement('details');
+
+            let summary = document.createElement('summary');
+            summary.innerHTML = obj.title;
+            group.appendChild(summary);
+
+            generateHtmlFromJson(obj.children, group);
+
+            div.appendChild(group);
+          break;
+          case "AutoGroup":
+            div.innerHTML = '';
+            let autoGroup = document.createElement('details');
+
+            let autoSummary = document.createElement('summary');
+            autoSummary.innerHTML = obj.title;
+            autoGroup.appendChild(autoSummary);
+
+            for (let value of obj.keys) {
+              let innerGroup = document.createElement('details');
+
+              let innerSummary = document.createElement('summary');
+              innerSummary.innerHTML = value;
+              innerGroup.appendChild(innerSummary);
+
+              generateHtmlFromJson(obj.children, innerGroup);
+
+              autoGroup.appendChild(innerGroup);
+            }
+
+            div.appendChild(autoGroup);
+          break;
+          case "List":
+            // add button
+            // plus erstellt referenziertes object (zb text feld oder custom)
+            // 
+          break;
+        }
+
+        container.appendChild(div);
+      }
     }
   </script>
 </body>

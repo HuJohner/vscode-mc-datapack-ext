@@ -1,17 +1,13 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
 
 import CreateNewDatapackCommand = require('./commands/createNewDatapackCommand');
 import NewMcfunctionCommand = require('./commands/newMcfunctionCommand');
-import OpenRecipeEditorCommand = require('./commands/openRecipeEditorCommand');
-import OpenAdvancementEditorCommand = require('./commands/openAdvancementEditorCommand');
-import OpenBiomeEditorCommand = require('./commands/openBiomeEditorCommand');
+import { RecipeEditorCommand } from './commands/RecipeEditorCommand';
+import { AdvancementEditorCommand } from './commands/AdvancementEditorCommand';
+import { BiomeEditorCommand } from './commands/BiomeEditorCommand';
 
 export let rootPath: string;
-export let recipePanel: vscode.WebviewPanel | undefined;
-export let advancementPanel: vscode.WebviewPanel | undefined;
-export let biomePanel: vscode.WebviewPanel | undefined;
+export let panels = new Map<String, vscode.WebviewPanel>();
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "mc-datapack" is now active!');
@@ -20,9 +16,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerCommand('mc-datapack.newDatapack', CreateNewDatapackCommand.run);
 	disposable = vscode.commands.registerCommand('mc-datapack.newMcfunction', NewMcfunctionCommand.run);
-	disposable = vscode.commands.registerCommand('mc-datapack.openRecipeEditor', OpenRecipeEditorCommand.run);
-	disposable = vscode.commands.registerCommand('mc-datapack.openAdvancementEditor', OpenAdvancementEditorCommand.run);
-	disposable = vscode.commands.registerCommand('mc-datapack.openBiomeEditor', OpenBiomeEditorCommand.run);
+	disposable = vscode.commands.registerCommand('mc-datapack.openRecipeEditor', (uri) => { new RecipeEditorCommand().run(uri); });
+	disposable = vscode.commands.registerCommand('mc-datapack.openAdvancementEditor', (uri) => { new AdvancementEditorCommand().run(uri); });
+	disposable = vscode.commands.registerCommand('mc-datapack.openBiomeEditor', (uri) => { new BiomeEditorCommand().run(uri); });
 
 	context.subscriptions.push(disposable);
 }
