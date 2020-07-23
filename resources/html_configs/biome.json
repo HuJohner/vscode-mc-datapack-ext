@@ -65,41 +65,45 @@
 		"min": 0.0,
 		"max": 2.0
 	},
-	"sky_color": {
-		"type": "TextBox",
-		"text_type": "integer",
-		"title": "Sky Colour",
-		"default": 7907327,
-		"min": 0,
-		"max": 16777215
-	},
 	"effects": {
 		"type": "Group",
 		"title": "Effects",
 		"children": {
+			"sky_color": {
+				"type": "ColourPick",
+				"colour_type": "decimal",
+				"title": "Sky Colour",
+				"default": 7907327
+			},
+			"foliage_color": {
+				"type": "ColourPick",
+				"colour_type": "decimal",
+				"title": "Foliage Colour",
+				"default": 10387789
+			},
+			"grass_color": {
+				"type": "ColourPick",
+				"colour_type": "decimal",
+				"title": "Grass Colour",
+				"default": 9470285
+			},
 			"fog_color": {
-				"type": "TextBox",
-				"text_type": "integer",
+				"type": "ColourPick",
+				"colour_type": "decimal",
 				"title": "Fog Colour",
-				"default": 12638463,
-				"min": 0,
-				"max": 16777215
+				"default": 12638463
 			},
 			"water_color": {
-				"type": "TextBox",
-				"text_type": "integer",
+				"type": "ColourPick",
+				"colour_type": "decimal",
 				"title": "Water Colour",
-				"default": 4159204,
-				"min": 0,
-				"max": 16777215
+				"default": 4159204
 			},
 			"water_fog_color": {
-				"type": "TextBox",
-				"text_type": "integer",
+				"type": "ColourPick",
+				"colour_type": "decimal",
 				"title": "Water Fog Colour",
-				"default": 329011,
-				"min": 0,
-				"max": 16777215
+				"default": 329011
 			},
 			"particle": {
 				"type": "Group",
@@ -214,7 +218,7 @@
 						"type": "CheckBox",
 						"text_type": "boolean",
 						"title": "Replace Current Music",
-						"default": "false"
+						"default": false
 					}
 				}
 			}

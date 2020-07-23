@@ -77,7 +77,7 @@ export abstract class EditorCommand {
                     case 'update':
                         let keys = this.getKeys(message);
                         let stringify = JSON.stringify(message.json, keys, 4);
-                        if (this.doc!.getText() !== stringify) {
+                        if (this.doc!.getText().replace(/\r/g, '') !== stringify) {
                             this.replace(this.doc!.getText(), stringify);
                         }
                 }

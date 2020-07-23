@@ -17,17 +17,6 @@
       line-height: 1.42857143;
     }
 
-    .display {
-      display: flex;
-      margin: 10px
-    }
-
-    .checkbox-inline {
-      display: flex;
-      flex: 0 0 100%;
-      overflow-x: auto;
-    }
-
     input[type=checkbox] {
       position: relative;
       color: var(--vscode-settings-checkboxForeground);
@@ -53,63 +42,45 @@
       color: #99a1a7;
     }
 
-    .checkbox-inline label {
+    select, input[type=text], input[type=number] {
       margin-left: 10px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: var(--vscode-input-background);
+      border: 1px solid var(--vscode-input-border);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: var(--vscode-input-foreground);
+    }
+
+    details > div {
+      margin-left: 10px;
+    }
+
+    .table {
+      display: table;
+    }
+
+    .row {
+      display: table-row;
+    }
+
+    .cell {
+      display: table-cell;
+    }
+
+    .col-span {
+      max-width: 1px;
+      overflow: visible;
       white-space: nowrap;
-    }
-
-    .dropdown-inline {
-      margin-bottom: 5px;
-      overflow-x: auto;
-    }
-
-    .dropdown-input {
-      margin-left: 10px;
-
-      height: 20px;
-      max-height: 20px;
-      padding: 6px 12px;
-      background-color: var(--vscode-input-background);
-      border: 1px solid var(--vscode-input-border);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: var(--vscode-input-foreground);
-    }
-
-    .text-inline {
-      display: flex;
-      flex: 0 0 100%;
-      margin-bottom: 5px;
-      overflow-x: auto;
-    }
-
-    .text-inline label, .dropdown-inline label {
-      margin-block-start: 8px;
-      margin-block-end: 0;
-    }
-
-    .text-input {
-      flex: 2 1;
-      margin-left: 10px;
-
-      width: 100%;
-      height: 20px;
-      padding: 6px 12px;
-      background-color: var(--vscode-input-background);
-      border: 1px solid var(--vscode-input-border);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: var(--vscode-input-foreground);
     }
   </style>
 </head>
 
 <body>
-  <div id="container">
+  <div id="container" class="table">
     
   </div>
 
@@ -126,16 +97,22 @@
 
     // Handle the message inside the webview
     window.addEventListener('message', event => {
+      // console.log('received ' + event.data.command);
       switch (event.data.command) {
         case 'init':
           config = event.data.config;
-          generateHtmlFromJson(config, document.getElementById('container'));
+          generateHtmlFromJson(config, document.getElementById('container'), '');
+          // console.log('inisialised');
+          update();
           break;
         case 'update':
           doc = event.data.document;
           rootPath = event.data.rootPath;
 
-          update();
+          if (config) {
+            // console.log('updating');
+            update();
+          }
       }
     });
 
@@ -149,20 +126,131 @@
 
     // update view
     function update() {
+      // doc -> fills html
+      updateElement(doc, config, '');
 
+      // config checks for missing elements
+      checkDocument(config, doc);
+      sendMessage();
+    }
+
+    function updateElement(doc, config, parent) {
+      for (let key in doc) {
+        let docObj = doc[key];
+        let configObj = config[key];
+
+        let html = document.getElementById(parent + key);
+        switch (configObj.type) {
+          case 'ComboBox':
+            html.querySelectorAll('select > option').forEach(option => {
+              if (option.value === docObj) {
+                option.selected = 'selected';
+              }
+            });
+            break;
+          case "TextBox":
+            html.querySelectorAll('input')[0].value = docObj;
+            break;
+          case "ColourPick":
+            let dec = docObj;
+            if (dec > 16777215) {
+              dec = 16777215;
+            } else if (dec < 0) {
+              dec = 0;
+            }
+            html.querySelectorAll('input').forEach(input => {
+              if (input.type === 'text') {
+                input.value = docObj;
+              } else if (input.type === 'color') {
+                input.value = '#' + String("000000" + dec.toString(16)).slice(-6);
+              }
+            });
+            break;
+          case "CheckBox":
+            html.querySelectorAll('input')[0].checked = docObj;
+            break;
+          case "Group":
+            updateElement(docObj, configObj.children, parent + key + '.');
+            break;
+          case "AutoGroup":
+            // TODO
+            break;
+          case "List":
+            // TODO
+            break;
+        }
+      }
+    }
+  
+    function checkDocument(config, doc) {
+      for (let key in config) {
+        let configObj = config[key];
+        if (!doc[key]) {
+          doc[key] = configObj.default;
+          if (configObj.type === 'Group') {
+            doc[key] = {};
+          }
+        }
+        if (configObj.type === 'Group') {
+          checkDocument(configObj.children, doc[key]);
+        }
+      }
+    }
+
+    function changeInput(event) {
+      let ids = event.target.parentNode.id.split('.');
+      let value = event.target.value;
+      if (event.target.tagName === 'select') {
+        event.target.childNodes.forEach(option => {
+          if (option.selected === 'selected') {
+            value = option.value;
+          }
+        });
+      } else if (event.target.type === 'checkbox') {
+        value = event.target.checked;
+      } else if (event.target.type === 'color') {
+        value = parseInt(event.target.value.substr(1), 16);
+        console.log(event.target.value + ' is ' + value);
+      }
+
+      setValueByKeys(doc, config, ids, value);
+      sendMessage();
+    }
+
+    function setValueByKeys(doc, config, keys, value) {
+      let i = keys.shift();
+
+      let val = value;
+      if (config[i].text_type === 'integer' || config[i].colour_type === 'decimal') {
+        val = parseInt(value)
+      } else if (config[i].text_type === 'double') {
+        val = parseFloat(value);
+      }
+
+      if (keys.length === 0) {
+        return doc[i] = val;
+      }
+
+      return setValueByKeys(doc[i], config[i].children, keys, val);
     }
   </script>
 
   <script>
-    function generateHtmlFromJson(json, container) {
+    function generateHtmlFromJson(json, container, parent) {
       for (let key in json) {
         let obj = json[key];
 
         let div = document.createElement('div');
-        div.innerHTML = obj.title;
+        div.id = parent + key;
+        div.className = 'row';
+        let label = document.createElement('label');
+        label.innerHTML = obj.title;
+        label.className = 'cell';
+        div.appendChild(label);
         switch (obj.type) {
           case "ComboBox":
             let select = document.createElement('select');
+            select.className = 'cell';
             for (let value of obj.values) {
               let item = document.createElement('option');
               item.value = value;
@@ -172,53 +260,80 @@
               }
               select.appendChild(item);
             }
+            select.oninput = changeInput;
             div.appendChild(select);
-          break;
+            break;
           case "TextBox":
             let input = document.createElement('input');
+            input.className = 'cell';
             switch (obj.text_type) {
               case 'integer':
                 input.type = 'number';
-              break;
+                break;
               case 'double':
                 input.type = 'number';
                 input.step = '0.01';
-              break;
+                break;
               default:
                 input.type = 'text';
             }
             input.min = obj.min;
             input.max = obj.max;
             input.value = obj.default;
+            input.oninput = changeInput;
             div.appendChild(input);
-          break;
+            break;
+          case "ColourPick":
+            let text = document.createElement('input');
+            text.type = 'text';
+            text.value = obj.default;
+            text.className = 'cell';
+            text.oninput = changeInput;
+            div.appendChild(text);
+            let colour = document.createElement('input');
+            colour.type = 'color';
+            colour.value = '#' + obj.default.toString(16);
+            colour.className = 'cell';
+            colour.oninput = changeInput;
+            div.appendChild(colour);
+            break;
           case "CheckBox":
             let checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
+            checkbox.className = 'cell';
+            checkbox.oninput = changeInput;
             if (obj.default === 'true') {
               checkbox.checked = true;
             }
             div.appendChild(checkbox);
-          break;
+            break;
           case "Group":
             div.innerHTML = '';
             let group = document.createElement('details');
+            group.className = 'col-span';
 
             let summary = document.createElement('summary');
             summary.innerHTML = obj.title;
             group.appendChild(summary);
 
-            generateHtmlFromJson(obj.children, group);
+            let fieldset = document.createElement('fieldset');
+            group.appendChild(fieldset);
+
+            generateHtmlFromJson(obj.children, fieldset, div.id + '.');
 
             div.appendChild(group);
-          break;
+            break;
           case "AutoGroup":
             div.innerHTML = '';
             let autoGroup = document.createElement('details');
+            autoGroup.className = 'col-span';
 
             let autoSummary = document.createElement('summary');
             autoSummary.innerHTML = obj.title;
             autoGroup.appendChild(autoSummary);
+
+            let autoFieldset = document.createElement('fieldset');
+            autoGroup.appendChild(autoFieldset);
 
             for (let value of obj.keys) {
               let innerGroup = document.createElement('details');
@@ -227,18 +342,20 @@
               innerSummary.innerHTML = value;
               innerGroup.appendChild(innerSummary);
 
-              generateHtmlFromJson(obj.children, innerGroup);
+              generateHtmlFromJson(obj.children, innerGroup, div.id + '.');
 
-              autoGroup.appendChild(innerGroup);
+              autoFieldset.appendChild(innerGroup);
             }
 
             div.appendChild(autoGroup);
-          break;
+            break;
           case "List":
+            // TODO
+
             // add button
             // plus erstellt referenziertes object (zb text feld oder custom)
             // 
-          break;
+            break;
         }
 
         container.appendChild(div);
