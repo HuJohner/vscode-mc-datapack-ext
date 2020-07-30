@@ -77,7 +77,7 @@ export abstract class EditorCommand {
                     case 'update':
                         let keys = this.getKeys(message);
                         let stringify = JSON.stringify(message.json, keys, 4);
-                        if (this.isValidJson(this.doc!.getText()) && this.doc!.getText().replace(/\s*/g, '') !== stringify.replace(/\s*/g, '')) {
+                        if (this.isValidJson(this.doc!.getText().replace(/\s/g, '')) && this.doc!.getText().replace(/\s/g, '') !== stringify.replace(/\s/g, '')) {
                             this.replace(this.doc!.getText(), stringify);
                         }
                 }
@@ -96,7 +96,7 @@ export abstract class EditorCommand {
     private update(document: vscode.TextDocument) {
         this.doc = document;
 
-        let text = this.doc.getText();
+        let text = this.doc.getText().replace(/\s/g, '');
         let message = {
             command: 'update',
             document: JSON.parse(text !== '' ? text : '{}'),

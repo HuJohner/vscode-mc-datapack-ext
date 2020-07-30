@@ -134,7 +134,9 @@
         case 'init':
           config = event.data.config;
           generateHtmlFromJson(config, document.getElementById('container'), '');
-          update();
+          if (doc) {
+            update();
+          }
           break;
         case 'update':
           doc = event.data.document;
@@ -166,9 +168,6 @@
 
     // doc fills html
     function updateElement(doc, config, parent) {
-      console.log(doc);
-      console.log(config);
-      console.log(parent);
       for (let key in doc) {
         let docObj = doc[key];
         let configObj = config[key];
@@ -214,7 +213,6 @@
               if (!item) {
                 let json = {};
                 json[i] = configObj.item;
-                console.log('generate item for id: ' + id + '.' + i);
                 generateHtmlFromJson(json, html.querySelector('details > fieldset'), id);
               }
               listConfig[i] = configObj.item;
@@ -261,7 +259,6 @@
         let configObj = json[key];
 
         let div = document.createElement('div');
-        console.log('parent: ' + parent + ' key: ' + key);
         div.id = concatIds(parent, key);
         div.className = 'row';
         let label = document.createElement('label');
@@ -434,35 +431,32 @@
     // }
 
     function changeInput(event) {
-      // let ids = event.target.id.split('.');
-      // if (ids.length === 0 || !ids[0]) {
-      //   ids = event.target.parentNode.id.split('.');
-      // }
-      // let value = event.target.value;
-      // if (event.target.tagName === 'select') {
-      //   event.target.childNodes.forEach(option => {
-      //     if (option.selected === 'selected') {
-      //       value = option.value;
-      //     }
-      //   });
-      // } else if (event.target.type === 'checkbox') {
-      //   value = event.target.checked;
-      // } else if (event.target.type === 'color') {
-      //   value = parseInt(event.target.value.substr(1), 16);
-      // }
+      let ids = event.target.id.split('.');
+      if (ids.length === 0 || !ids[0]) {
+        ids = event.target.parentNode.id.split('.');
+      }
+      let value = event.target.value;
+      if (event.target.tagName === 'select') {
+        event.target.childNodes.forEach(option => {
+          if (option.selected === 'selected') {
+            value = option.value;
+          }
+        });
+      } else if (event.target.type === 'checkbox') {
+        value = event.target.checked;
+      } else if (event.target.type === 'color') {
+        value = parseInt(event.target.value.substr(1), 16);
+      }
 
-      // setValueByKeys(doc, config, ids, value, false);
-      // sendMessage();
+      setValueByKeys(doc, config, ids, value);
+      sendMessage();
     }
 
-    function setValueByKeys(doc, config, keys, value, isList) {
+    function setValueByKeys(doc, config, keys, value) {
       console.log(keys);
+      console.log(config);
       let i = keys.shift();
-      let configObj = config;
-
-      if (!isList) {
-        configObj = config[i];
-      }
+      let configObj = config[i];
 
       let val = value;
       if (configObj.text_type === 'integer' || configObj.colour_type === 'decimal') {
@@ -477,14 +471,13 @@
 
       let configChild = configObj.children;
       if (!configChild) {
-        configChild = configObj.item;
+        configChild = {};
+        configChild[keys[0]] = configObj.item;
       }
-      if (!configChild) {
-        configChild = config;
-      }
-      console.log(doc);
-      console.log(i);
-      return setValueByKeys(doc[i], configChild, keys, val, configObj.type === 'List');
+      // if (!configChild) {
+      //   configChild = config;
+      // }
+      return setValueByKeys(doc[i], configChild, keys, val);
     }
 
     function concatIds(id1, id2) {
