@@ -47,6 +47,8 @@ export class BiomeEditorCommand extends EditorCommand {
 
             if (json[key].type === 'Group') {
                 this.getKeysFromJson(keys, json[key].children);
+            } else if (json[key].type === 'List') {
+                this.getKeysFromJson(keys, json[key].object);
             }
         }
     }

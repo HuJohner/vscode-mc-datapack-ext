@@ -42,7 +42,7 @@
       color: #99a1a7;
     }
 
-    select, input[type=text], input[type=number] {
+    input[type=text], input[type=number], input[type=color] {
       margin-left: 10px;
       margin-top: 10px;
       padding: 6px 12px;
@@ -53,6 +53,39 @@
       font-size: 14px;
       line-height: 1.42857143;
       color: var(--vscode-input-foreground);
+    }
+
+    select {
+      margin-left: 10px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: var(--vscode-dropdown-background);
+      border: 1px solid var(--vscode-dropdown-border);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: var(--vscode-input-foreground);
+    }
+
+    button {
+      margin-left: 10px;
+      margin-top: 10px;
+      padding: 2px 4px;
+      background-color: var(--vscode-button-background);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: var(--vscode-button-foreground);
+    }
+
+    fieldset {
+      border: 1px solid var(--vscode-panel-border);
+      border-top: 0;
+      border-right: 0;
+      border-bottom: 0;
     }
 
     details > div {
@@ -97,12 +130,10 @@
 
     // Handle the message inside the webview
     window.addEventListener('message', event => {
-      // console.log('received ' + event.data.command);
       switch (event.data.command) {
         case 'init':
           config = event.data.config;
           generateHtmlFromJson(config, document.getElementById('container'), '');
-          // console.log('inisialised');
           update();
           break;
         case 'update':
@@ -110,7 +141,6 @@
           rootPath = event.data.rootPath;
 
           if (config) {
-            // console.log('updating');
             update();
           }
       }
@@ -134,12 +164,17 @@
       sendMessage();
     }
 
+    // doc fills html
     function updateElement(doc, config, parent) {
+      console.log(doc);
+      console.log(config);
+      console.log(parent);
       for (let key in doc) {
         let docObj = doc[key];
         let configObj = config[key];
 
-        let html = document.getElementById(parent + key);
+        let id = concatIds(parent, key);
+        let html = document.getElementById(id);
         switch (configObj.type) {
           case 'ComboBox':
             html.querySelectorAll('select > option').forEach(option => {
@@ -148,10 +183,10 @@
               }
             });
             break;
-          case "TextBox":
-            html.querySelectorAll('input')[0].value = docObj;
+          case 'TextBox':
+            html.querySelector('input').value = docObj;
             break;
-          case "ColourPick":
+          case 'ColourPick':
             let dec = docObj;
             if (dec > 16777215) {
               dec = 16777215;
@@ -160,28 +195,46 @@
             }
             html.querySelectorAll('input').forEach(input => {
               if (input.type === 'text') {
-                input.value = docObj;
+                input.value = dec;
               } else if (input.type === 'color') {
                 input.value = '#' + String("000000" + dec.toString(16)).slice(-6);
               }
             });
             break;
-          case "CheckBox":
-            html.querySelectorAll('input')[0].checked = docObj;
+          case 'CheckBox':
+            html.querySelector('input').checked = docObj;
             break;
-          case "Group":
-            updateElement(docObj, configObj.children, parent + key + '.');
+          case 'Group':
+            updateElement(docObj, configObj.children, id);
             break;
-          case "AutoGroup":
-            // TODO
-            break;
-          case "List":
-            // TODO
+          case 'List':
+            let listConfig = {};
+            for (let i = 0; i < docObj.length; i++) {
+              let item = document.getElementById(id + '.' + i);
+              if (!item) {
+                let json = {};
+                json[i] = configObj.item;
+                console.log('generate item for id: ' + id + '.' + i);
+                generateHtmlFromJson(json, html.querySelector('details > fieldset'), id);
+              }
+              listConfig[i] = configObj.item;
+            }
+            updateElement(docObj, listConfig, id);
+
+            //         listFieldset.appendChild(document.createElement('br'));
+            //     
+            //       let objId = concatIds(parent, key);
+            //       objId += '.' + i;
+            //       let keys = Object.keys(configObj.object);
+            //       if (configObj.object[keys[0]].type === 'List' && keys[0] !== '') {
+            //         objId += '.' + keys[0];
+            //       }
             break;
         }
       }
     }
   
+    // config checks for missing elements
     function checkDocument(config, doc) {
       for (let key in config) {
         let configObj = config[key];
@@ -189,73 +242,42 @@
           doc[key] = configObj.default;
           if (configObj.type === 'Group') {
             doc[key] = {};
+          } else if (configObj.type === 'List') {
+            doc[key] = [];
           }
         }
+
+        let docObj = doc[key];
         if (configObj.type === 'Group') {
-          checkDocument(configObj.children, doc[key]);
+          checkDocument(configObj.children, docObj);
         }
       }
-    }
-
-    function changeInput(event) {
-      let ids = event.target.parentNode.id.split('.');
-      let value = event.target.value;
-      if (event.target.tagName === 'select') {
-        event.target.childNodes.forEach(option => {
-          if (option.selected === 'selected') {
-            value = option.value;
-          }
-        });
-      } else if (event.target.type === 'checkbox') {
-        value = event.target.checked;
-      } else if (event.target.type === 'color') {
-        value = parseInt(event.target.value.substr(1), 16);
-        console.log(event.target.value + ' is ' + value);
-      }
-
-      setValueByKeys(doc, config, ids, value);
-      sendMessage();
-    }
-
-    function setValueByKeys(doc, config, keys, value) {
-      let i = keys.shift();
-
-      let val = value;
-      if (config[i].text_type === 'integer' || config[i].colour_type === 'decimal') {
-        val = parseInt(value)
-      } else if (config[i].text_type === 'double') {
-        val = parseFloat(value);
-      }
-
-      if (keys.length === 0) {
-        return doc[i] = val;
-      }
-
-      return setValueByKeys(doc[i], config[i].children, keys, val);
     }
   </script>
 
   <script>
     function generateHtmlFromJson(json, container, parent) {
       for (let key in json) {
-        let obj = json[key];
+        let configObj = json[key];
 
         let div = document.createElement('div');
-        div.id = parent + key;
+        console.log('parent: ' + parent + ' key: ' + key);
+        div.id = concatIds(parent, key);
         div.className = 'row';
         let label = document.createElement('label');
-        label.innerHTML = obj.title;
+        label.innerHTML = configObj.title;
         label.className = 'cell';
         div.appendChild(label);
-        switch (obj.type) {
+        
+        switch (configObj.type) {
           case "ComboBox":
             let select = document.createElement('select');
             select.className = 'cell';
-            for (let value of obj.values) {
+            for (let value of configObj.values) {
               let item = document.createElement('option');
               item.value = value;
               item.innerHTML = value;
-              if (value === obj.default) {
+              if (value === configObj.default) {
                 item.selected = 'selected';
               }
               select.appendChild(item);
@@ -266,7 +288,7 @@
           case "TextBox":
             let input = document.createElement('input');
             input.className = 'cell';
-            switch (obj.text_type) {
+            switch (configObj.text_type) {
               case 'integer':
                 input.type = 'number';
                 break;
@@ -277,22 +299,22 @@
               default:
                 input.type = 'text';
             }
-            input.min = obj.min;
-            input.max = obj.max;
-            input.value = obj.default;
+            input.min = configObj.min;
+            input.max = configObj.max;
+            input.value = configObj.default;
             input.oninput = changeInput;
             div.appendChild(input);
             break;
           case "ColourPick":
             let text = document.createElement('input');
             text.type = 'text';
-            text.value = obj.default;
+            text.value = configObj.default;
             text.className = 'cell';
             text.oninput = changeInput;
             div.appendChild(text);
             let colour = document.createElement('input');
             colour.type = 'color';
-            colour.value = '#' + obj.default.toString(16);
+            colour.value = '#' + configObj.default.toString(16);
             colour.className = 'cell';
             colour.oninput = changeInput;
             div.appendChild(colour);
@@ -302,7 +324,7 @@
             checkbox.type = 'checkbox';
             checkbox.className = 'cell';
             checkbox.oninput = changeInput;
-            if (obj.default === 'true') {
+            if (configObj.default === 'true') {
               checkbox.checked = true;
             }
             div.appendChild(checkbox);
@@ -313,53 +335,166 @@
             group.className = 'col-span';
 
             let summary = document.createElement('summary');
-            summary.innerHTML = obj.title;
+            summary.innerHTML = configObj.title;
             group.appendChild(summary);
 
             let fieldset = document.createElement('fieldset');
             group.appendChild(fieldset);
 
-            generateHtmlFromJson(obj.children, fieldset, div.id + '.');
+            generateHtmlFromJson(configObj.children, fieldset, div.id);
 
             div.appendChild(group);
             break;
-          case "AutoGroup":
-            div.innerHTML = '';
-            let autoGroup = document.createElement('details');
-            autoGroup.className = 'col-span';
-
-            let autoSummary = document.createElement('summary');
-            autoSummary.innerHTML = obj.title;
-            autoGroup.appendChild(autoSummary);
-
-            let autoFieldset = document.createElement('fieldset');
-            autoGroup.appendChild(autoFieldset);
-
-            for (let value of obj.keys) {
-              let innerGroup = document.createElement('details');
-
-              let innerSummary = document.createElement('summary');
-              innerSummary.innerHTML = value;
-              innerGroup.appendChild(innerSummary);
-
-              generateHtmlFromJson(obj.children, innerGroup, div.id + '.');
-
-              autoFieldset.appendChild(innerGroup);
-            }
-
-            div.appendChild(autoGroup);
-            break;
           case "List":
-            // TODO
+            div.innerHTML = '';
+            let list = document.createElement('details');
+            list.className = 'col-span';
 
-            // add button
-            // plus erstellt referenziertes object (zb text feld oder custom)
-            // 
+            let listSummary = document.createElement('summary');
+            if (configObj.title != null) {
+              listSummary.innerHTML = configObj.title;
+            } else {
+              let arr = parent.split('.');
+              listSummary.innerHTML = arr[arr.length - 1];
+            }
+            list.appendChild(listSummary);
+
+            let button = document.createElement('button');
+            button.innerHTML = '+';
+            // TODO delete button
+            // switch (configObj.list_type) {
+            //   case 'text':
+            //     button.onclick = function(event) {
+            //       let count = event.target.parentNode.nextSibling.children.length / 2;
+            //       let id = div.id + '.' + count;
+            //       setValueByKeys(doc, config, id.split('.'), "", false);
+            //       sendMessage();
+            //     };
+            //     break;
+            //   case 'object':
+            //     button.onclick = function(event) {
+            //       let count = event.target.parentNode.nextSibling.children.length;
+            //       let id = div.id + '.' + count;
+
+            //       let value = {};
+            //       let keys = Object.keys(configObj.object);
+            //       if (keys.length === 1 && configObj.object[keys[0]].type === 'List') {
+            //         value = [];
+            //       }
+
+            //       setValueByKeys(doc, config, id.split('.'), value, false);
+            //       sendMessage();
+            //     };
+            //     break;
+            // }
+            listSummary.appendChild(button);
+
+            let listFieldset = document.createElement('fieldset');
+            list.appendChild(listFieldset);
+
+            div.appendChild(list);
             break;
         }
 
         container.appendChild(div);
       }
+    }
+
+    // function createTextField(parent, id, type) {
+    //   let text = document.createElement('input');
+    //   text.id = id;
+    //   text.type = type;
+    //   text.oninput = changeInput;
+    //   parent.appendChild(text);
+    //   return text;
+    // }
+
+    // function createItemField(parent, id, index, obj) {
+    //   if (obj.item[Object.keys(obj.item)[0]].type === 'List') {
+    //     generateHtmlFromJson(obj.item, parent, id + '.' + index);
+    //     return parent;
+    //   }
+
+    //   let group = document.createElement('details');
+    //   group.id = id + '.' + index;
+    //   group.className = 'col-span';
+
+    //   let summary = document.createElement('summary');
+    //   summary.innerHTML = index;
+    //   group.appendChild(summary);
+
+    //   let fieldset = document.createElement('fieldset');
+    //   group.appendChild(fieldset);
+
+    //   generateHtmlFromJson(obj.item, fieldset, group.id);
+
+    //   parent.appendChild(group);
+
+    //   return group;
+    // }
+
+    function changeInput(event) {
+      // let ids = event.target.id.split('.');
+      // if (ids.length === 0 || !ids[0]) {
+      //   ids = event.target.parentNode.id.split('.');
+      // }
+      // let value = event.target.value;
+      // if (event.target.tagName === 'select') {
+      //   event.target.childNodes.forEach(option => {
+      //     if (option.selected === 'selected') {
+      //       value = option.value;
+      //     }
+      //   });
+      // } else if (event.target.type === 'checkbox') {
+      //   value = event.target.checked;
+      // } else if (event.target.type === 'color') {
+      //   value = parseInt(event.target.value.substr(1), 16);
+      // }
+
+      // setValueByKeys(doc, config, ids, value, false);
+      // sendMessage();
+    }
+
+    function setValueByKeys(doc, config, keys, value, isList) {
+      console.log(keys);
+      let i = keys.shift();
+      let configObj = config;
+
+      if (!isList) {
+        configObj = config[i];
+      }
+
+      let val = value;
+      if (configObj.text_type === 'integer' || configObj.colour_type === 'decimal') {
+        val = parseInt(value)
+      } else if (configObj.text_type === 'double') {
+        val = parseFloat(value);
+      }
+
+      if (keys.length === 0) {
+        return doc[i] = val; // TODO nested lists
+      }
+
+      let configChild = configObj.children;
+      if (!configChild) {
+        configChild = configObj.item;
+      }
+      if (!configChild) {
+        configChild = config;
+      }
+      console.log(doc);
+      console.log(i);
+      return setValueByKeys(doc[i], configChild, keys, val, configObj.type === 'List');
+    }
+
+    function concatIds(id1, id2) {
+      let result = id1;
+      if (id1 && id2) {
+        result += '.' + id2;
+      } else {
+        result = id2;
+      }
+      return result;
     }
   </script>
 </body>

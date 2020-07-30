@@ -77,7 +77,7 @@ export abstract class EditorCommand {
                     case 'update':
                         let keys = this.getKeys(message);
                         let stringify = JSON.stringify(message.json, keys, 4);
-                        if (this.doc!.getText().replace(/\r/g, '') !== stringify) {
+                        if (this.isValidJson(this.doc!.getText()) && this.doc!.getText().replace(/\s*/g, '') !== stringify.replace(/\s*/g, '')) {
                             this.replace(this.doc!.getText(), stringify);
                         }
                 }
@@ -116,5 +116,14 @@ export abstract class EditorCommand {
         edit.replace(this.fileUri!, new vscode.Range(from, to), replaceValue);
 
         vscode.workspace.applyEdit(edit);
+    }
+
+    private isValidJson(str: string) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
 }

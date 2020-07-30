@@ -236,76 +236,263 @@
 		"children": {
 			"air": {
 				"type": "List",
-				"list_type": "text",
-				"title": "Air"
+				"title": "Air",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
 			},
 			"liquid": {
 				"type": "List",
-				"list_type": "text",
-				"title": "Liquid"
+				"title": "Liquid",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
 			}
 		}
 	},
 	"features": {
 		"type": "List",
-		"list_type": "object",
 		"title": "Features",
-		"object": {
-			"nested_list": {
-				"type": "List",
-				"list_type": "text",
-				"title": ""
+		"item": {
+			"type": "List",
+			"title": "",
+			"item": {
+				"type": "TextBox",
+				"text_type": "text",
+				"default": ""
 			}
 		}
 	},
 	"starts": {
 		"type": "List",
-		"list_type": "text",
-		"title": "Starts"
+		"title": "Starts",
+		"item": {
+			"type": "TextBox",
+			"text_type": "text",
+			"default": ""
+		}
 	},
 	"spawners": {
-		"type": "AutoGroup",
+		"type": "Group",
 		"title": "Spawners",
-		"keys": [
-			"monster",
-			"creature",
-			"ambient",
-			"water_creature",
-			"water_ambient",
-			"misc"
-		],
 		"children": {
-			"list": {
+			"monster": {
 				"type": "List",
-				"list_type": "object",
-				"title": "",
-				"object": {
-					"type": {
-						"type": "TextBox",
-						"text_type": "text",
-						"title": "Type",
-						"default": ""
-					},
-					"weight": {
-						"type": "TextBox",
-						"text_type": "integer",
-						"title": "Weight",
-						"default": 1,
-						"min": 1
-					},
-					"minCount": {
-						"type": "TextBox",
-						"text_type": "integer",
-						"title": "Min Count",
-						"default": 1,
-						"min": 1
-					},
-					"maxCount": {
-						"type": "TextBox",
-						"text_type": "integer",
-						"title": "Max Count",
-						"default": 0,
-						"min": 0
+				"title": "monster",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
+					}
+				}
+			},
+			"creature": {
+				"type": "List",
+				"title": "creature",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
+					}
+				}
+			},
+			"ambient": {
+				"type": "List",
+				"title": "ambient",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
+					}
+				}
+			},
+			"water_creature": {
+				"type": "List",
+				"title": "water_creature",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
+					}
+				}
+			},
+			"water_ambient": {
+				"type": "List",
+				"title": "water_ambient",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
+					}
+				}
+			},
+			"misc": {
+				"type": "List",
+				"title": "misc",
+				"item": {
+					"type": "Group",
+					"children": {
+						"type": {
+							"type": "TextBox",
+							"text_type": "text",
+							"title": "Type",
+							"default": ""
+						},
+						"weight": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Weight",
+							"default": 1,
+							"min": 1
+						},
+						"minCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Min Count",
+							"default": 1,
+							"min": 1
+						},
+						"maxCount": {
+							"type": "TextBox",
+							"text_type": "integer",
+							"title": "Max Count",
+							"default": 0,
+							"min": 0
+						}
 					}
 				}
 			}
