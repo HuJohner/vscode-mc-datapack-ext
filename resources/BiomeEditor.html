@@ -214,7 +214,7 @@
           case 'List':
             let listConfig = {};
             for (let i = 0; i < docObj.length; i++) {
-              let item = document.getElementById(id + '.' + i);
+              let item = document.getElementById(concatIds(id, i));
               if (!item) {
                 let json = {};
                 json[i] = configObj.item;
@@ -337,6 +337,7 @@
               summary.innerHTML = key;
             }
             group.appendChild(summary);
+            removeContainer = summary;
 
             let fieldset = document.createElement('fieldset');
             group.appendChild(fieldset);
@@ -361,7 +362,7 @@
             button.innerHTML = '+';
             button.onclick = function(event) {
               let count = event.target.parentNode.children.length - 1;
-              let id = div.id + '.' + count;
+              let id = concatIds(div.id, count);
 
               let value;
               switch (configObj.item.type) {
@@ -394,8 +395,13 @@
           removeButton.className = 'remove';
           removeButton.innerHTML = '-';
           removeButton.onclick = function(event) {
-            // TODO remove
-            console.log('remove');
+            let elem = event.target.closest('div');
+            let id = elem.id;
+
+            removeValueByKeys(doc, config, id.split('.'));
+            sendMessage();
+
+            elem.parentNode.lastChild.previousSibling.remove();
           };
           removeContainer.appendChild(removeButton);
         }
@@ -454,9 +460,25 @@
       return setValueByKeys(doc[i], configChild, keys, val);
     }
 
+    function removeValueByKeys(doc, config, keys) {
+      let i = keys.shift();
+      let configObj = config[i];
+
+      if (keys.length === 0) {
+        return doc.splice(i, 1);
+      }
+
+      let configChild = configObj.children;
+      if (!configChild) {
+        configChild = {};
+        configChild[keys[0]] = configObj.item;
+      }
+      return removeValueByKeys(doc[i], configChild, keys);
+    }
+
     function concatIds(id1, id2) {
       let result = id1;
-      if (id1 && id2) {
+      if ((id1 || id1 === 0) && (id2 || id2 === 0)) {
         result += '.' + id2;
       } else {
         result = id2;
