@@ -218,15 +218,6 @@
               listConfig[i] = configObj.item;
             }
             updateElement(docObj, listConfig, id);
-
-            //         listFieldset.appendChild(document.createElement('br'));
-            //     
-            //       let objId = concatIds(parent, key);
-            //       objId += '.' + i;
-            //       let keys = Object.keys(configObj.object);
-            //       if (configObj.object[keys[0]].type === 'List' && keys[0] !== '') {
-            //         objId += '.' + keys[0];
-            //       }
             break;
         }
       }
@@ -262,7 +253,9 @@
         div.id = concatIds(parent, key);
         div.className = 'row';
         let label = document.createElement('label');
-        label.innerHTML = configObj.title;
+        if (configObj.title != null) {
+          label.innerHTML = configObj.title;
+        }
         label.className = 'cell';
         div.appendChild(label);
         
@@ -332,7 +325,11 @@
             group.className = 'col-span';
 
             let summary = document.createElement('summary');
-            summary.innerHTML = configObj.title;
+            if (configObj.title != null) {
+              summary.innerHTML = configObj.title;
+            } else {
+              summary.innerHTML = key;
+            }
             group.appendChild(summary);
 
             let fieldset = document.createElement('fieldset');
@@ -350,40 +347,32 @@
             let listSummary = document.createElement('summary');
             if (configObj.title != null) {
               listSummary.innerHTML = configObj.title;
-            } else {
-              let arr = parent.split('.');
-              listSummary.innerHTML = arr[arr.length - 1];
             }
             list.appendChild(listSummary);
 
             let button = document.createElement('button');
             button.innerHTML = '+';
             // TODO delete button
-            // switch (configObj.list_type) {
-            //   case 'text':
-            //     button.onclick = function(event) {
-            //       let count = event.target.parentNode.nextSibling.children.length / 2;
-            //       let id = div.id + '.' + count;
-            //       setValueByKeys(doc, config, id.split('.'), "", false);
-            //       sendMessage();
-            //     };
-            //     break;
-            //   case 'object':
-            //     button.onclick = function(event) {
-            //       let count = event.target.parentNode.nextSibling.children.length;
-            //       let id = div.id + '.' + count;
+            button.onclick = function(event) {
+              let count = event.target.parentNode.nextSibling.children.length;
+              let id = div.id + '.' + count;
 
-            //       let value = {};
-            //       let keys = Object.keys(configObj.object);
-            //       if (keys.length === 1 && configObj.object[keys[0]].type === 'List') {
-            //         value = [];
-            //       }
+              let value;
+              switch (configObj.item.type) {
+                case 'TextBox':
+                  value = "";
+                  break;   
+                case 'Group':
+                  value = {};
+                  break;
+                case 'List':
+                  value = [];
+                  break; 
+              }
 
-            //       setValueByKeys(doc, config, id.split('.'), value, false);
-            //       sendMessage();
-            //     };
-            //     break;
-            // }
+              setValueByKeys(doc, config, id.split('.'), value);
+              sendMessage();
+            };
             listSummary.appendChild(button);
 
             let listFieldset = document.createElement('fieldset');
@@ -396,39 +385,6 @@
         container.appendChild(div);
       }
     }
-
-    // function createTextField(parent, id, type) {
-    //   let text = document.createElement('input');
-    //   text.id = id;
-    //   text.type = type;
-    //   text.oninput = changeInput;
-    //   parent.appendChild(text);
-    //   return text;
-    // }
-
-    // function createItemField(parent, id, index, obj) {
-    //   if (obj.item[Object.keys(obj.item)[0]].type === 'List') {
-    //     generateHtmlFromJson(obj.item, parent, id + '.' + index);
-    //     return parent;
-    //   }
-
-    //   let group = document.createElement('details');
-    //   group.id = id + '.' + index;
-    //   group.className = 'col-span';
-
-    //   let summary = document.createElement('summary');
-    //   summary.innerHTML = index;
-    //   group.appendChild(summary);
-
-    //   let fieldset = document.createElement('fieldset');
-    //   group.appendChild(fieldset);
-
-    //   generateHtmlFromJson(obj.item, fieldset, group.id);
-
-    //   parent.appendChild(group);
-
-    //   return group;
-    // }
 
     function changeInput(event) {
       let ids = event.target.id.split('.');
@@ -453,8 +409,6 @@
     }
 
     function setValueByKeys(doc, config, keys, value) {
-      console.log(keys);
-      console.log(config);
       let i = keys.shift();
       let configObj = config[i];
 
@@ -466,7 +420,7 @@
       }
 
       if (keys.length === 0) {
-        return doc[i] = val; // TODO nested lists
+        return doc[i] = val;
       }
 
       let configChild = configObj.children;
@@ -474,9 +428,6 @@
         configChild = {};
         configChild[keys[0]] = configObj.item;
       }
-      // if (!configChild) {
-      //   configChild = config;
-      // }
       return setValueByKeys(doc[i], configChild, keys, val);
     }
 
