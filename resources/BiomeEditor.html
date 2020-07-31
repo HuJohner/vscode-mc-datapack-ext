@@ -81,6 +81,11 @@
       color: var(--vscode-button-foreground);
     }
 
+    .add, .remove {
+      width: 25px;
+      height: 25px;
+    }
+
     fieldset {
       border: 1px solid var(--vscode-panel-border);
       border-top: 0;
@@ -259,6 +264,7 @@
         label.className = 'cell';
         div.appendChild(label);
         
+        let removeContainer = div;
         switch (configObj.type) {
           case "ComboBox":
             let select = document.createElement('select');
@@ -351,10 +357,10 @@
             list.appendChild(listSummary);
 
             let button = document.createElement('button');
+            button.className = 'add';
             button.innerHTML = '+';
-            // TODO delete button
             button.onclick = function(event) {
-              let count = event.target.parentNode.nextSibling.children.length;
+              let count = event.target.parentNode.children.length - 1;
               let id = div.id + '.' + count;
 
               let value;
@@ -373,16 +379,33 @@
               setValueByKeys(doc, config, id.split('.'), value);
               sendMessage();
             };
-            listSummary.appendChild(button);
+            removeContainer = listSummary;
 
             let listFieldset = document.createElement('fieldset');
             list.appendChild(listFieldset);
+            listFieldset.appendChild(button);
 
             div.appendChild(list);
             break;
         }
 
-        container.appendChild(div);
+        if (key != '' && !isNaN(key)) { // is child of list
+          let removeButton = document.createElement('button');
+          removeButton.className = 'remove';
+          removeButton.innerHTML = '-';
+          removeButton.onclick = function(event) {
+            // TODO remove
+            console.log('remove');
+          };
+          removeContainer.appendChild(removeButton);
+        }
+
+        let plusButton = container.querySelector(':scope > button.add');
+        if (plusButton) {
+          container.insertBefore(div, plusButton);
+        } else {
+          container.appendChild(div);
+        }
       }
     }
 
