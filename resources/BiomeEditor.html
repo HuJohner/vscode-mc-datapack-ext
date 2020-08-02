@@ -209,20 +209,22 @@
             html.querySelector('input').checked = docObj;
             break;
           case 'Group':
-            updateElement(docObj, configObj.children, id);
-            break;
           case 'List':
-            let listConfig = {};
-            for (let i = 0; i < docObj.length; i++) {
-              let item = document.getElementById(concatIds(id, i));
-              if (!item) {
-                let json = {};
-                json[i] = configObj.item;
-                generateHtmlFromJson(json, html.querySelector('details > fieldset'), id);
+            if (configObj.children_type === 'children') {
+              updateElement(docObj, configObj.children, id);
+            } else if (configObj.children_type === 'item') {
+              let listConfig = {};
+              for (let i = 0; i < docObj.length; i++) {
+                let item = document.getElementById(concatIds(id, i));
+                if (!item) {
+                  let json = {};
+                  json[i] = configObj.item;
+                  generateHtmlFromJson(json, html.querySelector('details > fieldset'), id);
+                }
+                listConfig[i] = configObj.item;
               }
-              listConfig[i] = configObj.item;
+              updateElement(docObj, listConfig, id);
             }
-            updateElement(docObj, listConfig, id);
             break;
         }
       }
@@ -232,18 +234,20 @@
     function checkDocument(config, doc) {
       for (let key in config) {
         let configObj = config[key];
-        if (!doc[key]) {
-          doc[key] = configObj.default;
-          if (configObj.type === 'Group') {
-            doc[key] = {};
-          } else if (configObj.type === 'List') {
-            doc[key] = [];
+        if (!configObj.optional) {
+          if (!doc[key]) {
+            doc[key] = configObj.default;
+            if (configObj.type === 'Group') {
+              doc[key] = {};
+            } else if (configObj.type === 'List') {
+              doc[key] = [];
+            }
           }
-        }
 
-        let docObj = doc[key];
-        if (configObj.type === 'Group') {
-          checkDocument(configObj.children, docObj);
+          let docObj = doc[key];
+          if (configObj.children_type === 'children') {
+            checkDocument(configObj.children, docObj);
+          }
         }
       }
     }
@@ -326,9 +330,10 @@
             div.appendChild(checkbox);
             break;
           case "Group":
+          case "List":
             div.innerHTML = '';
-            let group = document.createElement('details');
-            group.className = 'col-span';
+            let details = document.createElement('details');
+            details.className = 'col-span';
 
             let summary = document.createElement('summary');
             if (configObj.title != null) {
@@ -336,60 +341,46 @@
             } else {
               summary.innerHTML = key;
             }
-            group.appendChild(summary);
+            details.appendChild(summary);
             removeContainer = summary;
 
             let fieldset = document.createElement('fieldset');
-            group.appendChild(fieldset);
+            details.appendChild(fieldset);
 
-            generateHtmlFromJson(configObj.children, fieldset, div.id);
+            if (configObj.children_type === 'item') {
+              let button = document.createElement('button');
+              button.className = 'add';
+              button.innerHTML = '+';
+              button.onclick = function(event) {
+                let count = event.target.parentNode.children.length - 1;
+                let id = concatIds(div.id, count);
 
-            div.appendChild(group);
-            break;
-          case "List":
-            div.innerHTML = '';
-            let list = document.createElement('details');
-            list.className = 'col-span';
+                let value;
+                switch (configObj.item.type) {
+                  case 'TextBox':
+                    value = "";
+                    break;   
+                  case 'Group':
+                    value = {};
+                    break;
+                  case 'List':
+                    value = [];
+                    break; 
+                }
 
-            let listSummary = document.createElement('summary');
-            if (configObj.title != null) {
-              listSummary.innerHTML = configObj.title;
+                setValueByKeys(doc, config, id.split('.'), value);
+                sendMessage();
+              };
+              fieldset.appendChild(button);
+            } else {
+              generateHtmlFromJson(configObj.children, fieldset, div.id);
             }
-            list.appendChild(listSummary);
 
-            let button = document.createElement('button');
-            button.className = 'add';
-            button.innerHTML = '+';
-            button.onclick = function(event) {
-              let count = event.target.parentNode.children.length - 1;
-              let id = concatIds(div.id, count);
-
-              let value;
-              switch (configObj.item.type) {
-                case 'TextBox':
-                  value = "";
-                  break;   
-                case 'Group':
-                  value = {};
-                  break;
-                case 'List':
-                  value = [];
-                  break; 
-              }
-
-              setValueByKeys(doc, config, id.split('.'), value);
-              sendMessage();
-            };
-            removeContainer = listSummary;
-
-            let listFieldset = document.createElement('fieldset');
-            list.appendChild(listFieldset);
-            listFieldset.appendChild(button);
-
-            div.appendChild(list);
+            div.appendChild(details);
             break;
         }
 
+        // TODO not on children lists
         if (key != '' && !isNaN(key)) { // is child of list
           let removeButton = document.createElement('button');
           removeButton.className = 'remove';

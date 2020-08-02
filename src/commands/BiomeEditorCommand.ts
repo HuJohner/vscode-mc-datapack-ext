@@ -26,6 +26,7 @@ export class BiomeEditorCommand extends EditorCommand {
         let keys = this.jsonKeys;
 
         this.getKeysFromJson(keys, this.config);
+        // remove emtpys
 
         return keys;
     }
@@ -48,7 +49,13 @@ export class BiomeEditorCommand extends EditorCommand {
             if (json[key].type === 'Group') {
                 this.getKeysFromJson(keys, json[key].children);
             } else if (json[key].type === 'List') {
-                this.getKeysFromJson(keys, { '': json[key].item });
+                if (json[key].children_type === 'item') {
+                    this.getKeysFromJson(keys, { '': json[key].item });
+                } else if (json[key].children_type === 'children') {
+                    for (let i in json[key].children) {
+                        this.getKeysFromJson(keys, { '': json[key].children[i] });
+                    }
+                }
             }
         }
     }

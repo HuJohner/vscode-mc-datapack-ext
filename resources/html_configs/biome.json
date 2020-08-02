@@ -57,6 +57,15 @@
 		"min": 0.0,
 		"max": 2.0
 	},
+	"temperature_modifier": {
+		"type": "ComboBox",
+		"title": "Temperature Modifier",
+		"default": "none",
+		"values": [
+			"none",
+			"frozen"
+		]
+	},
 	"downfall": {
 		"type": "TextBox",
 		"text_type": "double",
@@ -68,6 +77,7 @@
 	"effects": {
 		"type": "Group",
 		"title": "Effects",
+		"children_type": "children",
 		"children": {
 			"sky_color": {
 				"type": "ColourPick",
@@ -108,6 +118,8 @@
 			"particle": {
 				"type": "Group",
 				"title": "Particle",
+				"optional": true,
+				"children_type": "children",
 				"children": {
 					"probability": {
 						"type": "TextBox",
@@ -120,6 +132,7 @@
 					"options": {
 						"type": "Group",
 						"title": "Options",
+						"children_type": "children",
 						"children": {
 							"type": {
 								"type": "TextBox",
@@ -135,11 +148,14 @@
 				"type": "TextBox",
 				"text_type": "text",
 				"title": "Ambient Sound",
+				"optional": true,
 				"default": ""
 			},
 			"mood_sound": {
 				"type": "Group",
 				"title": "Mood Sound",
+				"optional": true,
+				"children_type": "children",
 				"children": {
 					"sound": {
 						"type": "TextBox",
@@ -173,6 +189,8 @@
 			"additional_sound": {
 				"type": "Group",
 				"title": "Additional Sound",
+				"optional": true,
+				"children_type": "children",
 				"children": {
 					"sound": {
 						"type": "TextBox",
@@ -193,6 +211,8 @@
 			"music": {
 				"type": "Group",
 				"title": "Music",
+				"optional": true,
+				"children_type": "children",
 				"children": {
 					"sound": {
 						"type": "TextBox",
@@ -233,10 +253,12 @@
 	"carvers": {
 		"type": "Group",
 		"title": "Carvers",
+		"children_type": "children",
 		"children": {
 			"air": {
 				"type": "List",
 				"title": "Air",
+				"children_type": "item",
 				"item": {
 					"type": "TextBox",
 					"text_type": "text",
@@ -246,6 +268,7 @@
 			"liquid": {
 				"type": "List",
 				"title": "Liquid",
+				"children_type": "item",
 				"item": {
 					"type": "TextBox",
 					"text_type": "text",
@@ -257,19 +280,114 @@
 	"features": {
 		"type": "List",
 		"title": "Features",
-		"item": {
-			"type": "List",
-			"title": "",
-			"item": {
-				"type": "TextBox",
-				"text_type": "text",
-				"default": ""
+		"children_type": "children",
+		"children": {
+			"0": {
+				"type": "List",
+				"title": "Raw Generation",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"1": {
+				"type": "List",
+				"title": "Lakes",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"2": {
+				"type": "List",
+				"title": "Local Modifications",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"3": {
+				"type": "List",
+				"title": "Underground Structures",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"4": {
+				"type": "List",
+				"title": "Surface Structures",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"5": {
+				"type": "List",
+				"title": "Strongholds",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"6": {
+				"type": "List",
+				"title": "Underground Ores",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"7": {
+				"type": "List",
+				"title": "Underground Decoration",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"8": {
+				"type": "List",
+				"title": "Vegetal Decoration",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
+			},
+			"9": {
+				"type": "List",
+				"title": "Top Layer Decoration",
+				"children_type": "item",
+				"item": {
+					"type": "TextBox",
+					"text_type": "text",
+					"default": ""
+				}
 			}
 		}
 	},
 	"starts": {
 		"type": "List",
 		"title": "Starts",
+		"children_type": "item",
 		"item": {
 			"type": "TextBox",
 			"text_type": "text",
@@ -279,12 +397,15 @@
 	"spawners": {
 		"type": "Group",
 		"title": "Spawners",
+		"children_type": "children",
 		"children": {
 			"monster": {
 				"type": "List",
 				"title": "monster",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -319,8 +440,10 @@
 			"creature": {
 				"type": "List",
 				"title": "creature",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -355,8 +478,10 @@
 			"ambient": {
 				"type": "List",
 				"title": "ambient",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -391,8 +516,10 @@
 			"water_creature": {
 				"type": "List",
 				"title": "water_creature",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -427,8 +554,10 @@
 			"water_ambient": {
 				"type": "List",
 				"title": "water_ambient",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -463,8 +592,10 @@
 			"misc": {
 				"type": "List",
 				"title": "misc",
+				"children_type": "item",
 				"item": {
 					"type": "Group",
+					"children_type": "children",
 					"children": {
 						"type": {
 							"type": "TextBox",
@@ -509,13 +640,25 @@
 	"spawn_costs": {
 		"type": "Group",
 		"title": "Spawn Costs",
+		"children_type": "children",
 		"children": {
 		}
+	},
+	"grass_color_modifier": {
+		"type": "ComboBox",
+		"title": "Grass Colour Modifier",
+		"default": "none",
+		"values": [
+			"none",
+			"dark_forest",
+			"swamp"
+		]
 	},
 	"parent": {
 		"type": "TextBox",
 		"text_type": "text",
 		"title": "Parent",
+		"optional": true,
 		"default": ""
 	}
 }
