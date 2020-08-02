@@ -115,6 +115,16 @@
 				"title": "Water Fog Colour",
 				"default": 329011
 			},
+			"grass_color_modifier": {
+				"type": "ComboBox",
+				"title": "Grass Colour Modifier",
+				"default": "none",
+				"values": [
+					"none",
+					"dark_forest",
+					"swamp"
+				]
+			},
 			"particle": {
 				"type": "Group",
 				"title": "Particle",
@@ -186,9 +196,9 @@
 					}
 				}
 			},
-			"additional_sound": {
+			"additions_sound": {
 				"type": "Group",
-				"title": "Additional Sound",
+				"title": "Additions Sound",
 				"optional": true,
 				"children_type": "children",
 				"children": {
@@ -640,19 +650,23 @@
 	"spawn_costs": {
 		"type": "Group",
 		"title": "Spawn Costs",
-		"children_type": "children",
-		"children": {
+		"children_type": "item",
+		"item": {
+			"type": "Group",
+			"children_type": "children",
+			"children": {
+				"energy_budget": {
+					"type": "TextBox",
+					"text_type": "double",
+					"title": "Energy Budget"
+				},
+				"charge": {
+					"type": "TextBox",
+					"text_type": "double",
+					"title": "Charge"
+				}
+			}
 		}
-	},
-	"grass_color_modifier": {
-		"type": "ComboBox",
-		"title": "Grass Colour Modifier",
-		"default": "none",
-		"values": [
-			"none",
-			"dark_forest",
-			"swamp"
-		]
 	},
 	"parent": {
 		"type": "TextBox",

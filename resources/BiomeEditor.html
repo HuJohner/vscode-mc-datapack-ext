@@ -219,7 +219,7 @@
                 if (!item) {
                   let json = {};
                   json[i] = configObj.item;
-                  generateHtmlFromJson(json, html.querySelector('details > fieldset'), id);
+                  generateHtmlFromJson(json, html.querySelector('details > fieldset'), id, true);
                 }
                 listConfig[i] = configObj.item;
               }
@@ -254,7 +254,7 @@
   </script>
 
   <script>
-    function generateHtmlFromJson(json, container, parent) {
+    function generateHtmlFromJson(json, container, parent, isList) {
       for (let key in json) {
         let configObj = json[key];
 
@@ -380,8 +380,7 @@
             break;
         }
 
-        // TODO not on children lists
-        if (key != '' && !isNaN(key)) { // is child of list
+        if (isList) {
           let removeButton = document.createElement('button');
           removeButton.className = 'remove';
           removeButton.innerHTML = '-';
