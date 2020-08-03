@@ -351,6 +351,22 @@
               let name = document.createElement('input');
               name.className = 'add-text';
               name.type = 'text';
+              name.oninput = function(event) {
+                let children = [];
+                fieldset.childNodes.forEach(elem => {
+                  if (elem.nodeName === 'DIV') {
+                    let split = elem.id.split('.');
+                    children.push(split[split.length - 1]);
+                  }
+                });
+                if (!children.includes(event.target.value)) {
+                  button.disabled = false;
+                  event.target.style.backgroundColor = '';
+                } else {
+                  button.disabled = true;
+                  event.target.style.backgroundColor = 'red';
+                }
+              };
 
               let button = document.createElement('button');
               button.className = 'add';
