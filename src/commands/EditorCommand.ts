@@ -34,8 +34,7 @@ export abstract class EditorCommand {
                 enableScripts: true
             });
 
-            let content = fs.readFileSync(path.join(Extension.rootPath, 'resources', this.id + '.html'), 'utf8');
-            panel.webview.html = content;
+            panel.webview.html = this.getHtmlContent();
 
             // update on visible
             let changeState = panel.onDidChangeViewState(e => {
@@ -87,6 +86,10 @@ export abstract class EditorCommand {
 
             Extension.panels.set(this.id, panel);
         }
+    }
+
+    getHtmlContent(): string {
+        return fs.readFileSync(path.join(Extension.rootPath, 'resources', this.id + '.html'), 'utf8');
     }
 
     abstract onReceiveMessage(message: any): boolean;
