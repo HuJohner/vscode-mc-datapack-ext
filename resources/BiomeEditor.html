@@ -214,7 +214,7 @@
               updateElement(docObj, configObj.children, id);
             } else if (configObj.children_type === 'item') {
               let listConfig = {};
-              for (let i = 0; i < docObj.length; i++) {
+              for (let i in docObj) {
                 let item = document.getElementById(concatIds(id, i));
                 if (!item) {
                   let json = {};
@@ -348,12 +348,19 @@
             details.appendChild(fieldset);
 
             if (configObj.children_type === 'item') {
+              let name = document.createElement('input');
+              name.className = 'add-text';
+              name.type = 'text';
+
               let button = document.createElement('button');
               button.className = 'add';
               button.innerHTML = '+';
               button.onclick = function(event) {
-                let count = event.target.parentNode.children.length - 1;
-                let id = concatIds(div.id, count);
+                let i = name.value;
+                if (!i) {
+                  i = event.target.parentNode.children.length - 2;
+                }
+                let id = concatIds(div.id, i);
 
                 let value;
                 switch (configObj.item.type) {
@@ -370,8 +377,14 @@
 
                 setValueByKeys(doc, config, id.split('.'), value);
                 sendMessage();
+                name.value = '';
               };
+			        fieldset.appendChild(name);
               fieldset.appendChild(button);
+			  
+              if (!configObj.namable) {
+                name.style.display = 'none';
+              }
             } else {
               generateHtmlFromJson(configObj.children, fieldset, div.id);
             }
@@ -391,14 +404,14 @@
             removeValueByKeys(doc, config, id.split('.'));
             sendMessage();
 
-            elem.parentNode.lastChild.previousSibling.remove();
+            elem.parentNode.lastChild.previousSibling.previousSibling.remove();
           };
           removeContainer.appendChild(removeButton);
         }
 
-        let plusButton = container.querySelector(':scope > button.add');
-        if (plusButton) {
-          container.insertBefore(div, plusButton);
+        let plusText = container.querySelector(':scope > input.add-text');
+        if (plusText) {
+          container.insertBefore(div, plusText);
         } else {
           container.appendChild(div);
         }
@@ -455,7 +468,10 @@
       let configObj = config[i];
 
       if (keys.length === 0) {
-        return doc.splice(i, 1);
+        if (Array.isArray(doc)) {
+          return doc.splice(i, 1);
+        }
+        return doc[i] = undefined;
       }
 
       let configChild = configObj.children;

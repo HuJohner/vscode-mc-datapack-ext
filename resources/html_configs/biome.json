@@ -651,6 +651,7 @@
 		"type": "Group",
 		"title": "Spawn Costs",
 		"children_type": "item",
+		"namable": true,
 		"item": {
 			"type": "Group",
 			"children_type": "children",
