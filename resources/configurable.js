@@ -64,6 +64,10 @@ function updateElement(doc, config, parent) {
                 }
                 break;
         }
+
+        if (configObj.conditional) {
+            updateConditionals(docObj, config, key, parent);
+        }
     }
 }
 
@@ -97,8 +101,11 @@ function generateHtmlFromJson(json, container, parent, isList) {
         let div = document.createElement('div');
         div.id = concatIds(parent, key);
         div.className = 'row';
+        if (configObj.hidden) {
+            div.style.display = 'none';
+        }
         let label = document.createElement('label');
-        if (configObj.title != null) {
+        if (configObj.title !== null) {
             label.innerHTML = configObj.title;
         }
         label.className = 'cell';
@@ -139,6 +146,12 @@ function generateHtmlFromJson(json, container, parent, isList) {
                 input.max = configObj.max;
                 input.value = configObj.default;
                 input.oninput = changeInput;
+                if (configObj.conditional) {
+                    input.oninput = function(event) {
+                        changeInput(event);
+                        updateConditionals(event.target.value, json, key, parent);
+                    };
+                }
                 div.appendChild(input);
                 break;
             case "ColourPick":
@@ -172,7 +185,7 @@ function generateHtmlFromJson(json, container, parent, isList) {
                 details.className = 'col-span';
 
                 let summary = document.createElement('summary');
-                if (configObj.title != null) {
+                if (configObj.title !== null) {
                     summary.innerHTML = configObj.title;
                 } else {
                     summary.innerHTML = key;
@@ -300,9 +313,17 @@ function setValueByKeys(doc, config, keys, value) {
 
     let val = value;
     if (configObj.text_type === 'integer' || configObj.colour_type === 'decimal') {
-        val = parseInt(value)
+        val = parseInt(value);
     } else if (configObj.text_type === 'double') {
         val = parseFloat(value);
+    }
+
+    if (!doc[i]) {
+        if (configObj.type === 'Group') {
+            doc[i] = {};
+        } else if (configObj.type === 'List') {
+            doc[i] = [];
+        }
     }
 
     if (keys.length === 0) {
@@ -346,4 +367,26 @@ function concatIds(id1, id2) {
         result = id2;
     }
     return result;
+}
+
+function updateConditionals(value, config, key, parent) {
+    let list;
+    for (let k in config[key].conditional) {
+        if (k === value) {
+            list = config[key].conditional[k];
+            break;
+        }
+    }
+
+    let parentElem = document.getElementById(concatIds(parent, key)).parentNode;
+    parentElem.childNodes.forEach(e => {
+        let id = e.id.split('.').pop();
+        if (config[id] && config[id].hidden) {
+            if (list && list.includes(id)) {
+                e.style.display = '';
+            } else if (config[id] && config[id].hidden) {
+                e.style.display = 'none';
+            }
+        }
+    });
 }

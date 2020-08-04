@@ -148,7 +148,98 @@
 								"type": "TextBox",
 								"text_type": "text",
 								"title": "Type",
-								"default": ""
+								"default": "",
+								"conditional": {
+									"block": [
+										"name",
+										"properties"
+									],
+									"falling_dust": [
+										"name",
+										"properties"
+									],
+									"dust": [
+										"r",
+										"g",
+										"b",
+										"scale"
+									],
+									"item": [
+										"id",
+										"count",
+										"tag"
+									]
+								}
+							},
+							"name": {
+								"type": "TextBox",
+								"text_type": "text",
+								"title": "Name",
+								"default": "",
+								"hidden": true
+							},
+							"properties": {
+								"type": "Group",
+								"title": "Properties",
+								"children_type": "children",
+								"hidden": true,
+								"children": {
+									"state": {
+										"type": "TextBox",
+										"text_type": "text",
+										"title": "State",
+										"default": ""
+									}
+								}
+							},
+							"r": {
+								"type": "TextBox",
+								"text_type": "double",
+								"title": "R",
+								"default": "",
+								"hidden": true
+							},
+							"g": {
+								"type": "TextBox",
+								"text_type": "double",
+								"title": "G",
+								"default": "",
+								"hidden": true
+							},
+							"b": {
+								"type": "TextBox",
+								"text_type": "double",
+								"title": "B",
+								"default": "",
+								"hidden": true
+							},
+							"scale": {
+								"type": "TextBox",
+								"text_type": "double",
+								"title": "Scale",
+								"default": "",
+								"hidden": true
+							},
+							"id": {
+								"type": "TextBox",
+								"text_type": "text",
+								"title": "Id",
+								"default": "",
+								"hidden": true
+							},
+							"count": {
+								"type": "TextBox",
+								"text_type": "integer",
+								"title": "Count",
+								"default": "",
+								"hidden": true
+							},
+							"tag": {
+								"type": "TextBox",
+								"text_type": "text",
+								"title": "Tag",
+								"default": "",
+								"hidden": true
 							}
 						}
 					}
