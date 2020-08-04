@@ -11,6 +11,7 @@ function update() {
 // doc fills html
 function updateElement(doc, config, parent) {
     for (let key in doc) {
+        console.debug({doc, config, parent, key});
         let docObj = doc[key];
         let configObj = config[key];
 
