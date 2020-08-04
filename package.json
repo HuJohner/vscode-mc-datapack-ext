@@ -19,7 +19,8 @@
 		"onCommand:mc-datapack.newMcfunction",
 		"onCommand:mc-datapack.openRecipeEditor",
 		"onCommand:mc-datapack.openAdvancementEditor",
-		"onCommand:mc-datapack.openBiomeEditor"
+		"onCommand:mc-datapack.openBiomeEditor",
+		"onCommand:mc-datapack.openCarverEditor"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -60,6 +61,11 @@
 				"command": "mc-datapack.openBiomeEditor",
 				"title": "Open Biome Editor",
 				"category": "Datapack"
+			},
+			{
+				"command": "mc-datapack.openCarverEditor",
+				"title": "Open Carver Editor",
+				"category": "Datapack"
 			}
 		],
 		"menus": {
@@ -87,6 +93,11 @@
 				{
 					"when": "resourceLangId == json && resource =~ /worldgen/biome/",
 					"command": "mc-datapack.openBiomeEditor",
+					"group": "mc-datapack"
+				},
+				{
+					"when": "resourceLangId == json && resource =~ /worldgen/configured_carver/",
+					"command": "mc-datapack.openCarverEditor",
 					"group": "mc-datapack"
 				}
 			]

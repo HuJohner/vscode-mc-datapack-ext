@@ -10,7 +10,8 @@ export abstract class ConfigurableEditorCommand extends EditorCommand {
     private config: any;
 
     getHtmlContent(): string {
-        let content = super.getHtmlContent();
+        let content = fs.readFileSync(path.join(Extension.rootPath, 'resources', 'ConfigurableEditor.html'), 'utf8');
+        content = content.replace('{title}', this.title);
         content = content.replace('/*{stylesheet}*/', fs.readFileSync(path.join(Extension.rootPath, 'resources', 'stylesheet.css'), 'utf8'));
         return content.replace('/*{configurable_script}*/', fs.readFileSync(path.join(Extension.rootPath, 'resources', 'configurable.js'), 'utf8'));
     }
