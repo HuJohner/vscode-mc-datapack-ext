@@ -41,14 +41,12 @@
                         "type": "Group",
                         "title": "Properties",
                         "optional": true,
-                        "children_type": "children",
-                        "children": {
-                            "state": {
-                                "type": "TextBox",
-                                "text_type": "text",
-                                "title": "State",
-                                "default": ""
-                            }
+                        "children_type": "item",
+                        "namable": true,
+                        "item": {
+                            "type": "TextBox",
+                            "text_type": "text",
+                            "default": ""
                         }
                     }
                 }
@@ -68,14 +66,12 @@
                         "type": "Group",
                         "title": "Properties",
                         "optional": true,
-                        "children_type": "children",
-                        "children": {
-                            "state": {
-                                "type": "TextBox",
-                                "text_type": "text",
-                                "title": "State",
-                                "default": ""
-                            }
+                        "children_type": "item",
+                        "namable": true,
+                        "item": {
+                            "type": "TextBox",
+                            "text_type": "text",
+                            "default": ""
                         }
                     }
                 }
@@ -95,14 +91,12 @@
                         "type": "Group",
                         "title": "Properties",
                         "optional": true,
-                        "children_type": "children",
-                        "children": {
-                            "state": {
-                                "type": "TextBox",
-                                "text_type": "text",
-                                "title": "State",
-                                "default": ""
-                            }
+                        "children_type": "item",
+                        "namable": true,
+                        "item": {
+                            "type": "TextBox",
+                            "text_type": "text",
+                            "default": ""
                         }
                     }
                 }
