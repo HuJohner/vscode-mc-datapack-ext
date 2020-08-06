@@ -106,8 +106,10 @@ function generateHtmlFromJson(json, container, parent, isList) {
             div.style.display = 'none';
         }
         let label = document.createElement('label');
-        if (configObj.title !== null) {
+        if (configObj.title !== undefined) {
             label.innerHTML = configObj.title;
+        } else {
+            label.innerHTML = key;
         }
         label.className = 'cell';
         div.appendChild(label);
@@ -186,7 +188,7 @@ function generateHtmlFromJson(json, container, parent, isList) {
                 details.className = 'col-span';
 
                 let summary = document.createElement('summary');
-                if (configObj.title !== null) {
+                if (configObj.title !== undefined) {
                     summary.innerHTML = configObj.title;
                 } else {
                     summary.innerHTML = key;

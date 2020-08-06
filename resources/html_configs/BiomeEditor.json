@@ -362,6 +362,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -372,6 +373,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -389,6 +391,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -399,6 +402,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -409,6 +413,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -419,6 +424,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -429,6 +435,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -439,6 +446,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -449,6 +457,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -459,6 +468,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -469,6 +479,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -479,6 +490,7 @@
 				"children_type": "item",
 				"item": {
 					"type": "TextBox",
+					"title": "",
 					"text_type": "text",
 					"default": ""
 				}
@@ -491,6 +503,7 @@
 		"children_type": "item",
 		"item": {
 			"type": "TextBox",
+			"title": "",
 			"text_type": "text",
 			"default": ""
 		}
