@@ -203,6 +203,9 @@ function generateHtmlFromJson(json, container, parent, isList) {
                     let name = document.createElement('input');
                     name.className = 'add-text';
                     name.type = 'text';
+                    if (configObj.placeholder) {
+                        name.placeholder = configObj.placeholder;
+                    }
                     name.oninput = function (event) {
                         let children = [];
                         fieldset.childNodes.forEach(elem => {

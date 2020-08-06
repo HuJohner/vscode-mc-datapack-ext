@@ -43,6 +43,7 @@
                         "optional": true,
                         "children_type": "item",
                         "namable": true,
+                        "placeholder": "New State",
                         "item": {
                             "type": "TextBox",
                             "text_type": "text",
@@ -68,6 +69,7 @@
                         "optional": true,
                         "children_type": "item",
                         "namable": true,
+                        "placeholder": "New State",
                         "item": {
                             "type": "TextBox",
                             "text_type": "text",
@@ -93,6 +95,7 @@
                         "optional": true,
                         "children_type": "item",
                         "namable": true,
+                        "placeholder": "New State",
                         "item": {
                             "type": "TextBox",
                             "text_type": "text",

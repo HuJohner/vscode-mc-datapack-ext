@@ -181,15 +181,14 @@
 							"properties": {
 								"type": "Group",
 								"title": "Properties",
-								"children_type": "children",
-								"hidden": true,
-								"children": {
-									"state": {
-										"type": "TextBox",
-										"text_type": "text",
-										"title": "State",
-										"default": ""
-									}
+								"optional": true,
+								"children_type": "item",
+								"namable": true,
+								"placeholder": "New State",
+								"item": {
+									"type": "TextBox",
+									"text_type": "text",
+									"default": ""
 								}
 							},
 							"r": {
