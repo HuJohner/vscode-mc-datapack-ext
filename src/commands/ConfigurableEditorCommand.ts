@@ -55,7 +55,7 @@ export abstract class ConfigurableEditorCommand extends EditorCommand {
             if (json[key].type === 'Group') {
                 if (json[key].children_type === 'children') {
                     this.getKeysFromJson(keys, json[key].children, docObj);
-                } else if (json[key].children_type === 'item') {
+                } else if (json[key].children_type === 'item' && docObj) {
                     for (let i of Object.keys(docObj)) {
                         keys.push(i);
                     }

@@ -125,7 +125,7 @@ export abstract class EditorCommand {
         try {
             JSON.parse(str);
         } catch (e) {
-            return false;
+            return str === '';
         }
         return true;
     }
