@@ -1,7 +1,7 @@
 {
-    "name": {
+    "type": {
         "type": "ComboBox",
-        "title": "Name",
+        "title": "Type",
         "default": "cave",
         "values": [
             "cave",

@@ -150,11 +150,7 @@
 								"title": "Type",
 								"default": "",
 								"conditional": {
-									"block": [
-										"name",
-										"properties"
-									],
-									"falling_dust": [
+									"block,falling_dust": [
 										"name",
 										"properties"
 									],
@@ -182,6 +178,7 @@
 								"type": "Group",
 								"title": "Properties",
 								"optional": true,
+								"hidden": true,
 								"children_type": "item",
 								"namable": true,
 								"placeholder": "New State",

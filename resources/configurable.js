@@ -378,7 +378,7 @@ function concatIds(id1, id2) {
 function updateConditionals(value, config, key, parent) {
     let list;
     for (let k in config[key].conditional) {
-        if (k === value) {
+        if (k.split(',').includes(value)) {
             list = config[key].conditional[k];
             break;
         }
