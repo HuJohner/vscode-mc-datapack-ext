@@ -7,6 +7,7 @@ import { AdvancementEditorCommand } from './commands/AdvancementEditorCommand';
 import { BiomeEditorCommand } from './commands/BiomeEditorCommand';
 import { CarverEditorCommand } from './commands/CarverEditorCommand';
 import { SurfaceBuilderEditorCommand } from './commands/SurfaceBuilderEditorCommand';
+import { DimensionTypeEditorCommand } from './commands/DimensionTypeEditorCommand';
 
 export let rootPath: string;
 export let panels = new Map<String, vscode.WebviewPanel>();
@@ -23,6 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 	disposable = vscode.commands.registerCommand('mc-datapack.openBiomeEditor', (uri) => { new BiomeEditorCommand().run(uri); });
 	disposable = vscode.commands.registerCommand('mc-datapack.openCarverEditor', (uri) => { new CarverEditorCommand().run(uri); });
 	disposable = vscode.commands.registerCommand('mc-datapack.openSurfaceBuilderEditor', (uri) => { new SurfaceBuilderEditorCommand().run(uri); });
+	disposable = vscode.commands.registerCommand('mc-datapack.openDimensionTypeEditor', (uri) => { new DimensionTypeEditorCommand().run(uri); });
 
 	context.subscriptions.push(disposable);
 }

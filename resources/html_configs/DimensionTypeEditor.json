@@ -1,0 +1,85 @@
+{
+    "name": {
+        "type": "TextBox",
+        "text_type": "text",
+        "title": "Name",
+        "default": ""
+    },
+    "ultrawarm": {
+        "type": "CheckBox",
+        "title": "Ultrawarm",
+        "default": false
+    },
+    "natural": {
+        "type": "CheckBox",
+        "title": "Natural",
+        "default": true
+    },
+    "shrunk": {
+        "type": "CheckBox",
+        "title": "Shrunk",
+        "default": false
+    },
+    "coordinate_scale": {
+        "type": "TextBox",
+        "text_type": "double",
+        "title": "Coordinate Scale",
+        "default": 1.0
+    },
+    "has_skylight": {
+        "type": "CheckBox",
+        "title": "Has Skylight",
+        "default": true
+    },
+    "has_ceiling": {
+        "type": "CheckBox",
+        "title": "Has Ceiling",
+        "default": false
+    },
+    "ambient_light": {
+        "type": "TextBox",
+        "text_type": "double",
+        "title": "Ambient Light",
+        "default": 0.5
+    },
+    "fixed_time": {
+        "type": "TextBox",
+        "text_type": "integer",
+        "title": "Fixed Time",
+        "optional": true,
+        "min": 0,
+        "max": 24000
+    },
+    "piglin_safe": {
+        "type": "CheckBox",
+        "title": "Piglin Safe",
+        "default": false
+    },
+    "bed_works": {
+        "type": "CheckBox",
+        "title": "Bed Works",
+        "default": true
+    },
+    "respawn_anchor_works": {
+        "type": "CheckBox",
+        "title": "Respawn Anchor Works",
+        "default": false
+    },
+    "has_raids":{
+        "type": "CheckBox",
+        "title": "Has Raids",
+        "default": true
+    },
+    "logical_height": {
+        "type": "TextBox",
+        "text_type": "integer",
+        "title": "Logical Height",
+        "default": 256
+    },
+    "infiniburn": {
+        "type": "TextBox",
+        "text_type": "text",
+        "title": "Infiniburn",
+        "default": ""
+    }
+}

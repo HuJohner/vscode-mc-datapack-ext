@@ -77,7 +77,7 @@ function checkDocument(config, doc) {
     for (let key in config) {
         let configObj = config[key];
         if (!configObj.optional) {
-            if (!doc[key]) {
+            if (typeof doc[key] === 'undefined') {
                 doc[key] = configObj.default;
                 if (configObj.type === 'Group') {
                     doc[key] = {};
