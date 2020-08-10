@@ -150,21 +150,30 @@
 								"title": "Type",
 								"default": "",
 								"conditional": {
-									"block,falling_dust": [
-										"name",
-										"properties"
-									],
-									"dust": [
-										"r",
-										"g",
-										"b",
-										"scale"
-									],
-									"item": [
-										"id",
-										"count",
-										"tag"
-									]
+									"block,falling_dust": {
+										"target": "effects.particle.options",
+										"tags": [
+											"name",
+											"properties"
+										]
+									},
+									"dust": {
+										"target": "effects.particle.options",
+										"tags": [
+											"r",
+											"g",
+											"b",
+											"scale"
+										]
+									},
+									"item": {
+										"target": "effects.particle.options",
+										"tags": [
+											"id",
+											"count",
+											"tag"
+										]
+									}
 								}
 							},
 							"name": {

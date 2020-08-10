@@ -376,23 +376,27 @@ function concatIds(id1, id2) {
 }
 
 function updateConditionals(value, config, key, parent) {
+    let target;
     let list;
     for (let k in config[key].conditional) {
         if (k.split(',').includes(value)) {
-            list = config[key].conditional[k];
+            target = config[key].conditional[k].target;
+            list = config[key].conditional[k].tags;
             break;
         }
     }
 
-    let parentElem = document.getElementById(concatIds(parent, key)).parentNode;
-    parentElem.childNodes.forEach(e => {
-        let id = e.id.split('.').pop();
-        if (config[id] && config[id].hidden) {
-            if (list && list.includes(id)) {
-                e.style.display = '';
-            } else if (config[id] && config[id].hidden) {
-                e.style.display = 'none';
+    if (target) {
+        let parentElem = document.getElementById(concatIds(target, key)).parentNode;
+        parentElem.childNodes.forEach(e => {
+            let id = e.id.split('.').pop();
+            if (config[id] && config[id].hidden) {
+                if (list && list.includes(id)) {
+                    e.style.display = '';
+                } else if (config[id] && config[id].hidden) {
+                    e.style.display = 'none';
+                }
             }
-        }
-    });
+        });
+    }
 }
