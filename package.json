@@ -93,32 +93,32 @@
 			],
 			"editor/context": [
 				{
-					"when": "resourceLangId == json && resource =~ /recipes/",
+					"when": "resourceLangId == json && resource =~ //recipes//",
 					"command": "mc-datapack.openRecipeEditor",
 					"group": "mc-datapack"
 				},
 				{
-					"when": "resourceLangId == json && resource =~ /advancements/",
+					"when": "resourceLangId == json && resource =~ //advancements//",
 					"command": "mc-datapack.openAdvancementEditor",
 					"group": "mc-datapack"
 				},
 				{
-					"when": "resourceLangId == json && resource =~ /worldgen/biome/",
+					"when": "resourceLangId == json && resource =~ //worldgen/biome//",
 					"command": "mc-datapack.openBiomeEditor",
 					"group": "mc-datapack"
 				},
 				{
-					"when": "resourceLangId == json && resource =~ /worldgen/configured_carver/",
+					"when": "resourceLangId == json && resource =~ //worldgen/configured_carver//",
 					"command": "mc-datapack.openCarverEditor",
 					"group": "mc-datapack"
 				},
 				{
-					"when": "resourceLangId == json && resource =~ /worldgen/configured_surface_builder/",
+					"when": "resourceLangId == json && resource =~ //worldgen/configured_surface_builder//",
 					"command": "mc-datapack.openSurfaceBuilderEditor",
 					"group": "mc-datapack"
 				},
 				{
-					"when": "resourceLangId == json && resource =~ /dimension_type/",
+					"when": "resourceLangId == json && resource =~ //dimension_type//",
 					"command": "mc-datapack.openDimensionTypeEditor",
 					"group": "mc-datapack"
 				}
