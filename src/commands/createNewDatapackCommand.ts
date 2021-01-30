@@ -117,7 +117,7 @@ export function run(uri: vscode.Uri) {
                     const tagTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/tag.template'), 'utf8');
                     fs.writeFile(path.join(tagsPath, "tick.json"), tagTemplate.replace('<filename>', 'main')
                         .replace('<namespace>', namespace)
-                        .replace('<author>', author), err => {
+                        .replace('<author>', author.toLocaleLowerCase()), err => {
                             if (err) {
                                 console.error(err);
                                 return vscode.window.showErrorMessage(FAILED_NEW);
@@ -125,7 +125,7 @@ export function run(uri: vscode.Uri) {
                         });
                     fs.writeFile(path.join(tagsPath, "load.json"), tagTemplate.replace('<filename>', 'reset')
                         .replace('<namespace>', namespace)
-                        .replace('<author>', author), err => {
+                        .replace('<author>', author.toLocaleLowerCase()), err => {
                             if (err) {
                                 console.error(err);
                                 return vscode.window.showErrorMessage(FAILED_NEW);
