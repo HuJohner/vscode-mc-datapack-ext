@@ -34,6 +34,18 @@
 					"scope": "resource",
 					"default": "",
 					"description": "Value to use to replace <author> variable."
+				},
+				"mc-datapack.version": {
+					"type": "string",
+					"enum": [
+						"1.13",
+						"1.14",
+						"1.15",
+						"1.16",
+						"1.17"
+					],
+					"default": "1.16",
+					"description": "Value to use to replace <version> variable."
 				}
 			}
 		},
