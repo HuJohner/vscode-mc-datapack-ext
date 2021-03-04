@@ -10,6 +10,19 @@ const FAILED_NEW = 'Failed to create MC datapack';
 const SUCCESS_NEW = 'Created MC datapack';
 
 export function run(uri: vscode.Uri) {
+    global.mc_version = vscode.workspace.getConfiguration('mc-datapack')['version'];
+    if (mc_version == "1.13" || mc_version == "1.14") {
+        mc_version = 4;
+    }
+    if (mc_version == "1.15") {
+        mc_version = 5;
+    }
+    if (mc_version == "1.16") {
+        mc_version = 6;
+    }
+    if (mc_version == "1.17") {
+        mc_version = 7;
+    }
     // get current path
     if (uri === undefined) {
         return vscode.window.showErrorMessage('No current path available');
@@ -53,7 +66,7 @@ export function run(uri: vscode.Uri) {
             // generate mcmeta file
             const newFilePath = path.join(dir, "pack.mcmeta");
             const packTemplate = fs.readFileSync(path.join(Extension.rootPath, 'templates/pack.template'), 'utf8');
-            fs.writeFile(newFilePath, packTemplate.replace('<description>', description), err => {
+            fs.writeFile(newFilePath, packTemplate.replace('<description>', description).replace('<version>', mc_version), err => {
                 if (err) {
                     console.error(err);
                     return vscode.window.showErrorMessage(FAILED_NEW);
